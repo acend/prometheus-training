@@ -13,7 +13,6 @@ acendTraining:
         annotations:
           kubernetes.io/tls-acme: "true"
           cert-manager.io/cluster-issuer: letsencrypt-prod
-        useDefaultSecret: true
         appname: prometheus-training
         domainmain: puzzle.ch
         domain: training.puzzle.ch
