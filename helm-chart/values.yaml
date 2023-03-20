@@ -5,7 +5,7 @@ acendTraining:
       name: puzzle
       replicaCount: 2
       image:
-        repository: quay.io/puzzle/prometheus-basics-training
+        repository: quay.io/acend/prometheus-basics-training
         pullPolicy: Always
         tag: ""
         tagsuffix: ""
@@ -21,7 +21,7 @@ acendTraining:
       name: acend
       replicaCount: 2
       image:
-        repository: quay.io/puzzle/prometheus-basics-training
+        repository: quay.io/acend/prometheus-basics-training
         pullPolicy: Always
         tag: ""
         tagsuffix: "-acend"
@@ -33,7 +33,7 @@ acendTraining:
       name: baloise
       replicaCount: 2
       image:
-        repository: quay.io/puzzle/prometheus-basics-training
+        repository: quay.io/acend/prometheus-basics-training
         pullPolicy: Always
         tag: ""
         tagsuffix: "-baloise"

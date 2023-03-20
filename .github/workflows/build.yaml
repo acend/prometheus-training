@@ -41,7 +41,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            quay.io/puzzle/prometheus-basics-training:pr-${{ github.event.pull_request.number }}
+            quay.io/acend/prometheus-basics-training:pr-${{ github.event.pull_request.number }}
       -
         name: Build Acend Version
         uses: docker/build-push-action@v3
@@ -52,7 +52,7 @@ jobs:
             TRAINING_HUGO_ENV=acend
           push: true
           tags: |
-            quay.io/puzzle/prometheus-basics-training:pr-${{ github.event.pull_request.number }}-acend
+            quay.io/acend/prometheus-basics-training:pr-${{ github.event.pull_request.number }}-acend
       -
         name: Build Baloise Version
         uses: docker/build-push-action@v3
@@ -63,7 +63,7 @@ jobs:
             TRAINING_HUGO_ENV=baloise
           push: true
           tags: |
-            quay.io/puzzle/prometheus-basics-training:pr-${{ github.event.pull_request.number }}-baloise
+            quay.io/acend/prometheus-basics-training:pr-${{ github.event.pull_request.number }}-baloise
       -
         name: 'Install Helm'
         uses: azure/setup-helm@v3
