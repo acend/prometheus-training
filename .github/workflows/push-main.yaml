@@ -80,7 +80,7 @@ jobs:
       -
         name: Create KUBECONFIG
         env:
-          KUBE_CONFIG: '${{ secrets.KUBECONFIG }}'
+          KUBE_CONFIG: '${{ secrets.KUBECONFIG_K8S_ACEND }}'
         run: |
           mkdir -p $HOME/.kube
           echo "$KUBE_CONFIG" > $HOME/.kube/config

@@ -3,44 +3,41 @@ acendTraining:
   deployments:
     - 
       name: puzzle
-      replicaCount: 1
+      replicaCount: 2
       image:
         repository: quay.io/puzzle/prometheus-basics-training
         pullPolicy: Always
         tag: ""
         tagsuffix: ""
       ingress:
-        annotations: 
-          kubernetes.io/ingress.class: nginx-public
+        annotations:
+          kubernetes.io/tls-acme: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-prod
         useDefaultSecret: true
         appname: prometheus-training
         domainmain: puzzle.ch
-        domain: k8s.puzzle.ch
+        domain: training.puzzle.ch
     - 
       name: acend
-      replicaCount: 1
+      replicaCount: 2
       image:
         repository: quay.io/puzzle/prometheus-basics-training
         pullPolicy: Always
         tag: ""
         tagsuffix: "-acend"
       ingress:
-        annotations: 
-          kubernetes.io/ingress.class: nginx-public
         secretOverride: acend-wildcard 
         appname: prometheus-basics
         domain: training.acend.ch
     - 
       name: baloise
-      replicaCount: 1
+      replicaCount: 2
       image:
         repository: quay.io/puzzle/prometheus-basics-training
         pullPolicy: Always
         tag: ""
         tagsuffix: "-baloise"
       ingress:
-        annotations: 
-          kubernetes.io/ingress.class: nginx-public
         secretOverride: acend-wildcard 
         appname: prometheus-basics-baloise
         domain: training.acend.ch
