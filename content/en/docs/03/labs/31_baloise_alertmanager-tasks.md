@@ -26,6 +26,7 @@ spec:
 See [the Alertmanager documentation](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) for `<rule definition>`
 
 Example:
+
 To add an Alerting rule, create a PrometheusRule resource `training_testrules.yaml` in the monitoring folder of your CAASI Team Config Repository.
 
 ```yaml
@@ -38,7 +39,7 @@ spec:
     - name: testrulesgroup
       rules:
         - alert: kubePodCrashLooping # this will be the mail subject, enter which ever text you want
-          expr: rate(kube_pod_container_status_restarts_total{job="kube-state-metrics",namespace="testnamespace"}[5m]) * 60 * 5 > 0
+          expr: rate(kube_pod_container_status_restarts_total{job="kube-state-metrics",namespace="<team>-monitoring"}[5m]) * 60 * 5 > 0
           for: 15m
           annotations:
             message: Pod {{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container }}) is restarting {{ printf "%.2f" $value }} times / 5 minutes.
@@ -49,7 +50,7 @@ spec:
 This will fire an alert, everytime the following query matches
 
 ```
-rate(kube_pod_container_status_restarts_total{job="kube-state-metrics",namespace="testnamespace"}[5m]) * 60 * 5 > 0
+rate(kube_pod_container_status_restarts_total{job="kube-state-metrics",namespace="<team>-monitoring"}[5m]) * 60 * 5 > 0
 ```
 
 You can build/verify your Query in your [Thanos Querier UI](http://{{% param replacePlaceholder.thanosquerier %}}). As soon, as you apply the PrometheusRule resource, you should be able to see the alert in your [Thanos Ruler](http://{{% param replacePlaceholder.thanos %}}) implementation.
@@ -57,8 +58,6 @@ You can build/verify your Query in your [Thanos Querier UI](http://{{% param rep
 ### Task {{% param sectionnumber %}}.2: Send a test alert
 
 In this task you can use the [amtool](https://github.com/prometheus/alertmanager#amtool) command to send a test alert.
-
-{{% details title="Hints" mode-switcher="normalexpertmode" %}}
 
 To send a test alert with the labels `alertname=Up` and `node=bar` you can simply execute the following command.
 
