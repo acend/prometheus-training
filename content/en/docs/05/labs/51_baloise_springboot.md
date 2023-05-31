@@ -186,7 +186,9 @@ This counter is just a simple example for the sake of this lab. Those kind of me
 First we need to clone the repository to our local machine:
 
 ```bash
-git clone https://github.com/acend/prometheus-training-spring-boot-example && cd prometheus-training-spring-boot-example
+git clone https://github.com/acend/prometheus-training-spring-boot-example && \
+cd prometheus-training-spring-boot-example && \
+git checkout baloise
 ```
 
 and then configure the dependencies and `application.properties` as described in Task {{% param sectionnumber %}}.1.
@@ -224,7 +226,6 @@ public class CustomMetricController {
         return "ok";
     }
 }
-
 ```
 
 We register our custom counter `myCounter` on the `MeterRegistry` in the constructor of the RestController.
