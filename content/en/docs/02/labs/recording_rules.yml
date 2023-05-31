@@ -4,8 +4,10 @@ groups:
     rules:
       - record: :node_memory_MemAvailable_bytes:sum
         expr: |-
-          1 - (
+          ((
             sum by(instance) (node_memory_MemFree_bytes + node_memory_Cached_bytes + node_memory_Buffers_bytes)
           )
           /
             sum by(instance) (node_memory_MemTotal_bytes)
+            sum by(instance) (node_memory_MemTotal_bytes))
+          * 100
