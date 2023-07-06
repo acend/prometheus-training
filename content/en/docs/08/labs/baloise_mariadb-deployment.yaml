@@ -16,7 +16,7 @@ spec:
         app: mariadb
     spec:
       containers:
-        - image: quay.io/prometheus/mysqld-exporter:latest
+        - image: quay.io/prometheus/mysqld-exporter:v0.14.0
           name: mariadb-exporter
           env:
             - name: MYSQL_USER
