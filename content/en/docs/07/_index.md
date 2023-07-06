@@ -104,7 +104,7 @@ Use the default Grafana logging credentials and change the password
 
 {{% onlyWhen baloise %}}
 
-Have a look at the [Baloise Monitoring Stack](https://confluence.baloisenet.com/atlassian/display/BALMATE/06+-+Monitor+your+application+using+the+Baloise+Monitoring+Stack) and take a look at the different components and how they work together.
+Have a look at the [Baloise Monitoring Stack](https://confluence.baloisenet.com/display/BALMATE/Application+Monitoring) and take a look at the different components and how they work together.
 
 You will notice that each Team Monitoring Stack has components on all clusters it is included in. The metrics scraped by the Team Monitoring Stack are not shared by default. However, you can [provide your Prometheus time series to other monitoring stacks](https://confluence.baloisenet.com/atlassian/display/BALMATE/01+-+Deploying+the+Baloise+Monitoring+Stack).
 
