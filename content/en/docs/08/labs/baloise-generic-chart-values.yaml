@@ -5,7 +5,7 @@ example-mariadb:
     tag: 10.5
   additionalContainers:
     - name: "mariadb-exporter"
-      image: quay.io/prometheus/mysqld-exporter:latest
+      image: quay.io/prometheus/mysqld-exporter:v0.14.0
       env:
         - name: MYSQL_USER
           valueFrom:
