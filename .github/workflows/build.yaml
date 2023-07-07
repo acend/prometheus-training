@@ -35,7 +35,7 @@ jobs:
           password: ${{ secrets.QUAYIO_TOKEN }}
       -
         name: Build Latest Version
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./Dockerfile
@@ -44,7 +44,7 @@ jobs:
             quay.io/acend/prometheus-basics-training:pr-${{ github.event.pull_request.number }}
       -
         name: Build Acend Version
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./Dockerfile
@@ -55,7 +55,7 @@ jobs:
             quay.io/acend/prometheus-basics-training:pr-${{ github.event.pull_request.number }}-acend
       -
         name: Build Baloise Version
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./Dockerfile
