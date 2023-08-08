@@ -1,0 +1,8 @@
+apiVersion: v2
+name: example-mariadb
+version: 1.0.0
+dependencies:
+  - name:  generic-chart
+    version: 3.13.1
+    repository: https://charts.shapp.os1.balgroupit.com/shared/release/
+    alias: example-mariadb

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: example-web-python
+  name: example-web-python
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-web-python
+  template:
+    metadata:
+      labels:
+        app: example-web-python
+    spec:
+      containers:
+      - image: quay.io/acend/example-web-python
+        imagePullPolicy: Always
+        name: example-web-python
+      restartPolicy: Always

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: loki
+  name: example-loki
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loki
+  template:
+    metadata:
+      labels:
+        app: loki
+    spec:
+      containers:
+      - image: quay.balgroupit.com/acend/loki
+        imagePullPolicy: Always
+        name: loki
+        volumeMounts:
+        - mountPath: /loki/chunks
+          name: chunks
+        - mountPath: /loki/boltdb-shipper-cache
+          name: boltdb-shipper-cache
+        - mountPath: /loki/boltdb-shipper-active
+          name: shipper-active
+        - mountPath: /loki/wal
+          name: wal
+        - mountPath: /loki/compactor
+          name: compactor
+      restartPolicy: Always
+      volumes:
+      - name: chunks
+        emptyDir: {}
+      - name: boltdb-shipper-cache
+        emptyDir: {}
+      - name: shipper-active
+        emptyDir: {}
+      - name: wal
+        emptyDir: {}
+      - name: compactor
+        emptyDir: {}

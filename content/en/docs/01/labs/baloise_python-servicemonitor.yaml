@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/name: example-web-python
+  name: example-web-python-monitor
+spec:
+  endpoints:
+    - interval: 30s
+      port: http
+      scheme: http
+      path: /metrics
+  selector:
+    matchLabels:
+      app: example-web-python

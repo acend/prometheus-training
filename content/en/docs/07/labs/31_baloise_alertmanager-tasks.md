@@ -1,7 +1,7 @@
 ---
-title: "3.1 Tasks: Setup custom alerting rules"
+title: "7.1 Tasks: Setup custom alerting rules"
 weight: 2
-sectionnumber: 3.1
+sectionnumber: 7.1
 onlyWhen: baloise
 ---
 
