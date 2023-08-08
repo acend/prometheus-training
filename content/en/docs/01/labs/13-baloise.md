@@ -24,7 +24,7 @@ For this to work, you need to ensure:
 
 Create the following ServiceMonitor (`training_python-servicemonitor.yaml`):
 
-{{< readfile file="/content/en/docs/08/labs/baloise_python-servicemonitor.yaml" code="true" lang="yaml" >}}
+{{< readfile file="/content/en/docs/01/labs/baloise_python-servicemonitor.yaml" code="true" lang="yaml" >}}
 
 Verify that the target gets scraped in the [Prometheus user interface](http://{{% param replacePlaceholder.prometheus %}}) (either on CAASI or CAAST, depending where you deployed the application). Target name: `serviceMonitor/<team>-monitoring/example-web-python-monitor/0` (it may take up to a minute for Prometheus to load the new
 configuration and scrape the metrics).
@@ -42,15 +42,15 @@ Use the following command to deploy a MariaDB database your monitoring or applic
 
 Create the following deployment (`training_baloise_mariadb-deployment.yaml`)
 
-{{< readfile file="/content/en/docs/08/labs/baloise_mariadb-init-deployment.yaml" code="true" lang="yaml" >}}
+{{< readfile file="/content/en/docs/01/labs/baloise_mariadb-init-deployment.yaml" code="true" lang="yaml" >}}
 
 Create the following secret (`training_baloise_mariadb-secret.yaml`)
 
-{{< readfile file="/content/en/docs/08/labs/baloise_mariadb-init-secret.yaml" code="true" lang="yaml" >}}
+{{< readfile file="/content/en/docs/01/labs/baloise_mariadb-init-secret.yaml" code="true" lang="yaml" >}}
 
 Create the following service (`training_baloise_mariadb-service.yaml`)
 
-{{< readfile file="/content/en/docs/08/labs/baloise_mariadb-init-service.yaml" code="true" lang="yaml" >}}
+{{< readfile file="/content/en/docs/01/labs/baloise_mariadb-init-service.yaml" code="true" lang="yaml" >}}
 
 
 This will create a [Secret](https://kubernetes.io/docs/concepts/configuration/secret/) (username password to access the database), a [Service](https://kubernetes.io/docs/concepts/services-networking/service/) and the [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/).
@@ -63,15 +63,15 @@ This will create a [Secret](https://kubernetes.io/docs/concepts/configuration/se
 
 First we need to alter the MariaDB deployment `training_baloise_mariadb-deployment.yaml` by adding the MariaDB exporter as a second container.
 
-{{< readfile file="/content/en/docs/08/labs/baloise_mariadb-deployment.yaml" code="true" lang="yaml" >}}
+{{< readfile file="/content/en/docs/01/labs/baloise_mariadb-deployment.yaml" code="true" lang="yaml" >}}
 
 Then extend the service `training_baloise_mariadb-service.yaml` by adding a second port for the MariaDB exporter.
 
-{{< readfile file="/content/en/docs/08/labs/baloise_mariadb-service.yaml" code="true" lang="yaml" >}}
+{{< readfile file="/content/en/docs/01/labs/baloise_mariadb-service.yaml" code="true" lang="yaml" >}}
 
 Then we also need to create a new ServiceMonitor `training_baloise_mariadb-servicemonitor.yaml`.
 
-{{< readfile file="/content/en/docs/08/labs/servicemonitor-sidecar.yaml" code="true" lang="yaml" >}}
+{{< readfile file="/content/en/docs/01/labs/servicemonitor-sidecar.yaml" code="true" lang="yaml" >}}
 
 Verify that the target gets scraped in the [Prometheus user interface](http://{{% param replacePlaceholder.prometheus %}}/targets). Target name: `serviceMonitor/<team>-monitoring/mariadb/0` (It may take up to a minute for Prometheus to load the new configuration and scrape the metrics).
 
@@ -85,15 +85,15 @@ Deploy [Loki](https://grafana.com/oss/loki/) in the monitoring namespace.
 
 Create a deployment `training_loki-deployment.yaml`.
 
-{{< readfile file="/content/en/docs/08/labs/baloise_loki-deployment.yaml" code="true" lang="yaml" >}}
+{{< readfile file="/content/en/docs/01/labs/baloise_loki-deployment.yaml" code="true" lang="yaml" >}}
 
 Create a Service `training_service-loki.yaml`.
 
-{{< readfile file="/content/en/docs/08/labs/baloise_loki-service.yaml" code="true" lang="yaml" >}}
+{{< readfile file="/content/en/docs/01/labs/baloise_loki-service.yaml" code="true" lang="yaml" >}}
 
 Create the Loki ServiceMonitor `training_servicemonitor-loki.yaml`.
 
-{{< readfile file="/content/en/docs/08/labs/servicemonitor-loki.yaml" code="true" lang="yaml" >}}
+{{< readfile file="/content/en/docs/01/labs/servicemonitor-loki.yaml" code="true" lang="yaml" >}}
 
 * When you visit the [Prometheus user interface](http://{{% param replacePlaceholder.prometheus %}}/targets) you will notice that the Prometheus Server does not scrape metrics from Loki. Try to find out why.
 
@@ -212,15 +212,15 @@ Create an application on CAAST and deploy the following configuration.
 
 **Chart.yaml**:
 
-{{< readfile file="/content/en/docs/08/labs/baloise-generic-chart-Chart.yaml" code="true" lang="yaml" >}}
+{{< readfile file="/content/en/docs/01/labs/baloise-generic-chart-Chart.yaml" code="true" lang="yaml" >}}
 
 **values.yaml**:
 
-{{< readfile file="/content/en/docs/08/labs/baloise-generic-chart-values.yaml" code="true" lang="yaml" >}}
+{{< readfile file="/content/en/docs/01/labs/baloise-generic-chart-values.yaml" code="true" lang="yaml" >}}
 
 **templates/secret.yaml**:
 
-{{< readfile file="/content/en/docs/08/labs/baloise-generic-chart-secret.yaml" code="true" lang="yaml" >}}
+{{< readfile file="/content/en/docs/01/labs/baloise-generic-chart-secret.yaml" code="true" lang="yaml" >}}
 
 Verify that the target gets scraped in the [Prometheus user interface](http://{{% param replacePlaceholder.prometheus %}}/targets). Target name: `application-metrics/mariadb/0` (it may take up to a minute for Prometheus to load the new configuration and scrape the metrics).
 
