@@ -1,6 +1,6 @@
 ---
 title: "5. Prometheus in Kubernetes"
-weight: 5
+weight: 1
 sectionnumber: 1
 ---
 
