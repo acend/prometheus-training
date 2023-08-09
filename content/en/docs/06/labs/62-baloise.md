@@ -2,7 +2,7 @@
 title: "6.2 Tasks: Troubleshoot Kubernetes Service Discovery"
 weight: 2
 sectionnumber: 6.2
-onlyWhenNot: baloise
+onlyWhen: baloise
 ---
 
 ### Task {{% param sectionnumber %}}.1: Troubleshooting Kubernetes Service Discovery TODO: rewrite
