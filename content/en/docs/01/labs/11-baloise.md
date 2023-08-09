@@ -28,6 +28,7 @@ Please name all files created in this training with the filename prefix `trainin
 {{% /alert %}}
 
 ## Task {{% param sectionnumber %}}.2: Deploy example application TODO: needs to be checked
+
 {{% alert title="Note" color="primary" %}}
 We will deploy an application for demonstration purposes in our monitoring namespace. This should never be done for production use cases. If you are familiar with deploying on OpenShift, you can complete this lab by deploying the application on our test cluster.
 {{% /alert %}}

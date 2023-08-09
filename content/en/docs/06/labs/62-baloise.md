@@ -6,12 +6,13 @@ onlyWhenNot: baloise
 ---
 
 ### Task {{% param sectionnumber %}}.1: Troubleshooting Kubernetes Service Discovery TODO: rewrite
+
 We will now deploy an application with an error in the monitoring configration.
 
 Deploy [Loki](https://grafana.com/oss/loki/) in the monitoring namespace.
-    
+
 Create a deployment `training_loki-deployment.yaml`.
-    
+
 {{< readfile file="/content/en/docs/06/labs/baloise_loki-deployment.yaml" code="true" lang="yaml" >}}
 
 Create a Service `training_service-loki.yaml`.
@@ -28,7 +29,7 @@ Create the Loki ServiceMonitor `training_servicemonitor-loki.yaml`.
 The cause that Prometheus is not able to scrape metrics is usually one of the following:
 
 * The configuration defined in the ServiceMonitor does not appear in the Prometheus scrape configuration.
-  * Check if the label of your ServiceMonitor matches the label defined in the `serviceMonitorSelector` field of the Prometheus custom resource 
+  * Check if the label of your ServiceMonitor matches the label defined in the `serviceMonitorSelector` field of the Prometheus custom resource
   * Check the Prometheus operator logs for errors (permission issues or invalid ServiceMonitors)
 * The Endpoint appears in the Prometheus scrape config but not under targets.
   * The namespaceSelector in the ServiceMonitor does not match the namespace of your app

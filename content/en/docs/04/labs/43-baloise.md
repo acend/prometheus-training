@@ -6,6 +6,7 @@ onlyWhen: baloise
 ---
 
 ### Task {{% param sectionnumber %}}.1: Deploy a database and use a sidecar container to expose metric TODO: references etc etc
+
 **Task description**:
 
 As we've learned in [Lab 4 - Prometheus exporters](../../../04/) when applications do not expose metrics in the Prometheus format, there are a lot of exporters available to convert metrics into the correct format. In Kubernetes this is often done by deploying so called sidecar containers along with the actual application.
