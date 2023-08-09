@@ -5,33 +5,6 @@ sectionnumber: 1.3
 onlyWhen: baloise
 ---
 
-### Task {{% param sectionnumber %}}.1: Create a ServiceMonitor
-
-**Task description**:
-
-Create a ServiceMonitor for the example application.
-
-* Create a ServiceMonitor, which will configure Prometheus to scrape metrics from the example-web-python application every 30 seconds.
-
-For this to work, you need to ensure:
-
-* The example-web-python Service is labeled correctly and matches the labels you've defined in your ServiceMonitor.
-* The port name in your ServiceMonitor configuration matches the port name in the Service definition.
-  * hint: check with `{{% param cliToolName %}} -n <team>-monitoring get service example-web-python -o yaml`
-* Verify the target in the Prometheus user interface.
-
-{{% details title="Hints" mode-switcher="normalexpertmode" %}}
-
-Create the following ServiceMonitor (`training_python-servicemonitor.yaml`):
-
-{{< readfile file="/content/en/docs/01/labs/baloise_python-servicemonitor.yaml" code="true" lang="yaml" >}}
-
-Verify that the target gets scraped in the [Prometheus user interface](http://{{% param replacePlaceholder.prometheus %}}) (either on CAASI or CAAST, depending where you deployed the application). Target name: `serviceMonitor/<team>-monitoring/example-web-python-monitor/0` (it may take up to a minute for Prometheus to load the new
-configuration and scrape the metrics).
-
-{{% /details %}}
-
-
 ### Task {{% param sectionnumber %}}.2: Deploy a database and use a sidecar container to expose metrics
 
 **Task description**:

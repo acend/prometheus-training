@@ -4,17 +4,6 @@ weight: 1
 sectionnumber: 1
 ---
 
-## Prometheus Operator
-The Prometheus Operator is the preferred way of running Prometheus inside of a Kubernetes Cluster. In the following labs you will get to know its [CustomResources](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) in more detail, which are the following:
-  * [Prometheus](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#prometheus): Manage the Prometheus instances
-  * [Alertmanager](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#alertmanager): Manage the Alertmanager instances
-  * [ServiceMonitor](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#servicemonitor): Generate Kubernetes service discovery scrape configuration based on Kubernetes [service](https://kubernetes.io/docs/concepts/services-networking/service/) definitions
-  * [PrometheusRule](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#prometheusrule): Manage the Prometheus rules of your Prometheus
-  * [AlertmanagerConfig](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#alertmanagerconfig): Add additional receivers and routes to your existing Alertmanager configuration
-  * [PodMonitor](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#podmonitor): Generate Kubernetes service discovery scrape configuration based on Kubernetes pod definitions
-  * [Probe](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#probe): Custom resource to manage Prometheus blackbox exporter targets
-  * [ThanosRuler](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#thanosruler): Manage [Thanos rulers](https://github.com/thanos-io/thanos/blob/main/docs/components/rule.md)
-
 {{% onlyWhenNot baloise %}}
 
 ## Working mode (GitOps)
@@ -52,7 +41,96 @@ We will use this type of configuration in the task 2.1 (TODO link to 2.1).
 
 ### Dynamic configuration
 
-Besides the static target configuration, Prometheus provides many ways to dynamically add/remove targets. There are builtin service discovery mechanisms for cloud providers such as AWS, GCP, Hetzner, and many more. In addition, there are more versatile discovery mechanisms available which allow you to implement Prometheus in your environment (e.g., DNS service discovery or file service discovery). Most importantly, the Prometheus operator makes it very easy to let Prometheus discover targets dynamically using the Kubernetes API by looking up the `Endpoints` of a given Kubernetes `Service`. 
+Besides the static target configuration, Prometheus provides many ways to dynamically add/remove targets. There are builtin service discovery mechanisms for cloud providers such as AWS, GCP, Hetzner, and many more. In addition, there are more versatile discovery mechanisms available which allow you to implement Prometheus in your environment (e.g., DNS service discovery or file service discovery). Most importantly, the Prometheus operator makes it very easy to let Prometheus discover targets dynamically using the Kubernetes API.
+
+## Prometheus Operator
+The Prometheus Operator is the preferred way of running Prometheus inside of a Kubernetes Cluster. In the following labs you will get to know its [CustomResources](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) in more detail, which are the following:
+  * [Prometheus](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#prometheus): Manage the Prometheus instances
+  * [Alertmanager](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#alertmanager): Manage the Alertmanager instances
+  * [ServiceMonitor](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#servicemonitor): Generate Kubernetes service discovery scrape configuration based on Kubernetes [service](https://kubernetes.io/docs/concepts/services-networking/service/) definitions
+  * [PrometheusRule](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#prometheusrule): Manage the Prometheus rules of your Prometheus
+  * [AlertmanagerConfig](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#alertmanagerconfig): Add additional receivers and routes to your existing Alertmanager configuration
+  * [PodMonitor](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#podmonitor): Generate Kubernetes service discovery scrape configuration based on Kubernetes pod definitions
+  * [Probe](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#probe): Custom resource to manage Prometheus blackbox exporter targets
+  * [ThanosRuler](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#thanosruler): Manage [Thanos rulers](https://github.com/thanos-io/thanos/blob/main/docs/components/rule.md)
+
+### Service Discovery
+
+When configuring Prometheus to scrape metrics from Containers deployed in a Kubernetes Cluster it doesn't really make sense to configure every single target manually. That would be far too static and wouldn't really work in a highly dynamic environment. 
+
+In fact, we tightly integrate Prometheus with Kubernetes and let Prometheus discover the targets, which need to be scraped automatically via the Kubernetes API.
+
+The tight integration between Prometheus and Kubernetes can be configured with the [Kubernetes Service Discovery Config](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config).
+
+We can instruct Prometheus to scrape our application metrics from the sample application by creating a `ServiceMonitor`.
+
+ServiceMonitors are Kubernetes custom resources, which look like this:
+
+```yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/name: example-web-python
+  name: example-web-python-monitor
+spec:
+  endpoints:
+  - interval: 30s
+    port: http
+    scheme: http
+    path: /metrics
+  selector:
+    matchLabels:
+      prometheus-monitoring: 'true'
+```
+
+#### How does it work
+
+The Prometheus Operator watches namespaces for ServiceMonitor custom resources. It then updates the Service Discovery configuration of the Prometheus server(s) accordingly.
+
+The selector part in the ServiceMonitor defines which Kubernetes Services will be scraped. Here we are selecting the correct service by defining a selector on the label `prometheus-monitoring: 'true'`.
+
+```yaml
+# servicemonitor.yaml
+...
+  selector:
+    matchLabels:
+      prometheus-monitoring: 'true'
+...
+```
+
+The corresponding Service needs to have this label set:
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: example-web-python
+  labels:
+    prometheus-monitoring: 'true'
+...
+```
+
+The Prometheus Operator then determines all `Endpoints` that belong to this `Service` using the Kubernetes API. The `Endpoints` are then dynamically added as targets to the Prometheus server(s).
+
+The `spec` section in the ServiceMonitor resource allows to further configure the targets.
+In our case Prometheus will scrape:
+
+* Every 30 seconds
+* Look for a port with the name `http` (this must match the name in the Service resource)
+* Scrape metrics from the path `/metrics` using `http`
+
+### Best practices
+
+Use the common k8s labels <https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/>
+
+If possible, reduce the number of different ServiceMonitors for an application and thereby reduce the overall complexity.
+
+* Use the same `matchLabels` on different Services for your application (e.g. Frontend Service, Backend Service, Database Service)
+* Also make sure the ports of different Services have the same name
+* Expose your metrics under the same path
+
+Avoid relabeling and use standards or change the metric labels within the exporter.
 
 {{% onlyWhen baloise %}}
 
@@ -70,3 +148,13 @@ Have a look at the [Add Monitoring Targets outside of OpenShift](https://conflue
   * define a non default `scrape_interval`
 
 {{% /onlyWhen %}}
+
+## Collecting Application Metrics TODO: where
+
+When running applications in production, a fast feedback loop is a key factor. The following reasons show why it's essential to gather and combine all sorts of metrics when running an application in production:
+
+* To make sure that an application runs smoothly
+* To be able to see production issues and send alerts
+* To debug an application
+* To take business and architectural decisions
+* Metrics can also help to decide when to scale applications

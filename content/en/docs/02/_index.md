@@ -4,6 +4,7 @@ weight: 1
 sectionnumber: 1
 ---
 
+
 In this lab you are going to learn about the Prometheus exposition format and how metrics and their values are represented withing the Prometheus ecosystem.
 
 ## Prometheus exposition format
@@ -104,6 +105,11 @@ scrape_configs:
 ```
 
 In the example above we configured a single scrape job with the name `node_exporter` and three targets. After ingestion into Prometheus, every metric scraped by this job will have the label: `job="node_exporter"`. In addition, metrics scraped by this job from the target `10.0.0.25` will have the label `instance="10.0.0.25:9100"`
+
+## TODO Node Exporter theory
+`node_exporter` is a Prometheus exporter for hardware and OS metrics. Or in other words, it supplies us with the more common metrics we know from classic monitoring systems.
+It is therefore very useful for expanding Prometheus' monitoring capabilities into the infrastructure world.
+
 
 ## Relabeling (advanced)
 

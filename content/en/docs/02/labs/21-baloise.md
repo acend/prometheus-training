@@ -1,9 +1,8 @@
 ---
-title: "1.1 Tasks: File-Based Service Discovery"
-weight: 1
+title: "2.1 Tasks: File-Based Service Discovery"
+weight: 2
 onlyWhen: baloise
-
-sectionnumber: 1
+sectionnumber: 2.1
 ---
 
 In this first lab you are going to configure Prometheus to scrape the OpenShift-external targets by using file-based service discovery.
