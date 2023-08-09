@@ -4,179 +4,55 @@ weight: 1
 sectionnumber: 1
 ---
 
+## Prometheus Operator
+The Prometheus Operator is the preferred way of running Prometheus inside of a Kubernetes Cluster. In the following labs you will get to know its [CustomResources](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) in more detail, which are the following:
+  * [Prometheus](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#prometheus): Manage the Prometheus instances
+  * [Alertmanager](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#alertmanager): Manage the Alertmanager instances
+  * [ServiceMonitor](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#servicemonitor): Generate Kubernetes service discovery scrape configuration based on Kubernetes [service](https://kubernetes.io/docs/concepts/services-networking/service/) definitions
+  * [PrometheusRule](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#prometheusrule): Manage the Prometheus rules of your Prometheus
+  * [AlertmanagerConfig](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#alertmanagerconfig): Add additional receivers and routes to your existing Alertmanager configuration
+  * [PodMonitor](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#podmonitor): Generate Kubernetes service discovery scrape configuration based on Kubernetes pod definitions
+  * [Probe](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#probe): Custom resource to manage Prometheus blackbox exporter targets
+  * [ThanosRuler](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#thanosruler): Manage [Thanos rulers](https://github.com/thanos-io/thanos/blob/main/docs/components/rule.md)
+
 {{% onlyWhenNot baloise %}}
 
+## Working mode (GitOps)
+TODO: How to work with the repo etc.
 ## Installation
-
-### Setup
-
-Let's begin with the installation of Prometheus by downloading and extracting the Prometheus binary.
-
-1. Open a new terminal, navigate to your home directory and create the directories `work` and `downloads`:
-
-    ```bash
-    mkdir ~/{work,downloads}
-    cd ~/downloads
-    ```
-
-
-1. Download Prometheus:
-
-    ```bash
-    curl -L -O https://github.com/prometheus/prometheus/releases/download/v2.39.0/prometheus-2.39.0.linux-amd64.tar.gz
-    ```
-
-    {{% alert title="Note" color="primary" %}}
-Binaries for other CPU architectures such as ARM or other operating systems (e.g., Darwin, BSD, Windows) are available on the release page of Prometheus: <https://github.com/prometheus/prometheus/releases>
-    {{% /alert %}}
-
-1. Extract the archive to the work folder:
-
-    ```bash
-    tar fvxz prometheus-2.39.0.linux-amd64.tar.gz -C ~/work
-    ```
-
-
-    {{% alert title="Note" color="primary" %}}
-In theory, we could simply run Prometheus by executing the `prometheus` binary in `~/work/prometheus-2.39.0.linux-amd64`. However, to simplify tasks such as reloading or restarting, we are going to create a systemd unit file.
-    {{% /alert %}}
-
-1. Copy the `prometheus` and `promtool` binaries to `/usr/local/bin`
-
-    ```bash
-    sudo cp ~/work/prometheus-2.39.0.linux-amd64/{prometheus,promtool} /usr/local/bin
-    ```
-
-1. Create the systemd unit file and reload systemd manager configuration
-
-    ```bash
-    sudo curl -o /etc/systemd/system/prometheus.service https://raw.githubusercontent.com/puzzle/prometheus-training/main/content/en/docs/01/labs/prometheus.service
-    sudo systemctl daemon-reload
-    ```
-
-1. Create the required directories for Prometheus
-
-    ```bash
-    sudo mkdir /etc/prometheus /var/lib/prometheus
-    sudo chown ansible.ansible /etc/prometheus /var/lib/prometheus /etc/systemd/system/prometheus.service
-    sudo chmod g+w /etc/prometheus /var/lib/prometheus /etc/systemd/system/prometheus.service
-    ```
-
-1. Copy the Prometheus configuration to /etc/prometheus/prometheus.yml
-
-    ```bash
-    cp ~/work/prometheus-2.39.0.linux-amd64/prometheus.yml /etc/prometheus/prometheus.yml
-    ```
-
-### Configuration
-
-The configuration of Prometheus is done using a YAML config file and CLI flags. The Prometheus tarball we downloaded earlier includes a very basic example of a Prometheus configuration file:
-
-`/etc/prometheus/prometheus.yml`
-
-```yaml
-# my global config
-global:
-  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
-  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
-  # scrape_timeout is set to the global default (10s).
-
-# Alertmanager configuration
-alerting:
-  alertmanagers:
-    - static_configs:
-        - targets:
-          # - alertmanager:9093
-
-# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
-rule_files:
-  # - "first_rules.yml"
-  # - "second_rules.yml"
-
-# A scrape configuration containing exactly one endpoint to scrape:
-# Here it's Prometheus itself.
-scrape_configs:
-  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-  - job_name: "prometheus"
-
-    # metrics_path defaults to '/metrics'
-    # scheme defaults to 'http'.
-
-    static_configs:
-      - targets: ["localhost:9090"]
-```
-
-Let's take a look at two important configuration options:
-
-* `scrape_interval`: Prometheus is a pull-based monitoring system which means it will reach out to the configured targets and collect the metrics from them (instead of a push-based approach where the targets will push their metrics to the monitoring server). The option `scrape_interval` defines the interval at which Prometheus will collect the metrics for each target.
-
-* `scrape_configs`: This block defines which targets Prometheus will scrape. In the configuration above, only a single target (the Prometheus server itself at `localhost:9090`) is configured. Check out the [targets](#targets) section below for a detailed explanation.
+### Setup and configure Prometheus
+TODO: Describe the values that we set in the config: Things like scrape interval: (Prometheus is a pull-based monitoring system which means it will reach out to the configured targets and collect the metrics from them (instead of a push-based approach where the targets will push their metrics to the monitoring server). The option `scrape_interval` defines the interval at which Prometheus will collect the metrics for each target)
 
 {{% alert title="Note" color="primary" %}}
-We will learn more about other configuration options (`evaluation_interval`, `alerting`, and `rule_files`) later in this training.
+We will learn more about other configuration options (`evaluation_interval`, TODO: other settings visible in the CR) later in this training.
 {{% /alert %}}
 
-### Run Prometheus
-
-
-1. Start Prometheus and verify
-
-    ```bash
-    sudo systemctl start prometheus
-    ```
-
-1. Verify that Prometheus is up and running by navigating to <http://{{% param replacePlaceholder.prometheus %}}> with your browser. You should now see the Prometheus web UI.
+TODO: Alternatively just switch the branch of your repo to XY.
+### Check Prometheus
+TODO: Is your prometheus running? Use your browser to navigate to <http://{{% param replacePlaceholder.prometheus %}}> . You should now see the Prometheus web UI.
 
 {{% /onlyWhenNot %}}
 
 ## Targets
 
-Since Prometheus is a pull-based monitoring system, the Prometheus server maintains a set of targets to scrape. This set can be configured using the `scrape_configs` option in the Prometheus configuration file. The `scrape_configs` consist of a list of jobs defining the targets as well as additional parameters (path, port, authentication, etc.) which are required to scrape these targets.
+Since Prometheus is a pull-based monitoring system, the Prometheus server maintains a set of targets to scrape. This set can be configured using the `scrape_configs` option in the Prometheus configuration file. The `scrape_configs` consist of a list of jobs defining the targets as well as additional parameters (path, port, authentication, etc.) which are required to scrape these targets. As we will be using the Prometheus Operator on Kubernetes, we will never actually touch this configuration file by ourselves. Instead, we rely on the abstractions provided by the Operator, which we will look at closer in the next section.
 
-{{% alert title="Note" color="primary" %}}
-Each job definition must at least consist of a `job_name` and a target configuration (i.e., `static_configs`). For the list of all available options in the `scrape_config` and as a reference please check [Prometheus docs](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
-{{% /alert %}}
+There are two basic types of targets that we can add to our Prometheus server:
 
-There are two basic types of target configurations:
+### Static targets
 
-### Static configuration (example)
-
-In this case, the Prometheus configuration file contains a static list of targets. In order to make changes to the list, you need to change the configuration file.
+In this case, we define one or more targets statically. In order to make changes to the list, you need to change the configuration file. As the name implies, this way of defining targets is inflexible and not suited to monitor workload inside of Kubernetes as these are highly dynamic.
 
 {{% onlyWhenNot baloise %}}
-We used this type of configuration in the previous section to scrape the metrics of the Prometheus server:
+We will use this type of configuration in the task ? (TODO link to static target lab)
 {{% /onlyWhenNot %}}
+{{% onlyWhen baloise %}}
+We will use this type of configuration in the task 2.1 (TODO link to 2.1).
+{{% /onlyWhen %}}
 
+### Dynamic configuration
 
-```yaml
-...
-scrape_configs:
-  ...
-  - job_name: "example-job" # this is a minimal example of a job definition containing the job_name and a target configuration
-    static_configs:
-    - targets:
-      - server1:8080
-      - server2:8080
-  ...
-```
-
-### Dynamic configuration (example)
-
-Besides the static target configuration, Prometheus provides many ways to dynamically add/remove targets. There are builtin service discovery mechanisms for cloud providers such as Kubernetes, AWS, GCP, Hetzner, and many more. In addition, there are more versatile discovery mechanisms available which allow you to implement Prometheus in your environment (e.g., DNS service discovery or file service discovery).
-Let's take a look at an example of a file service discovery configuration:
-
-```yaml
-...
-scrape_configs:
-  ...
-  - job_name: example_file_sd
-    file_sd_configs:
-    - files:
-      - /etc/prometheus/file_sd/targets.yml
-  ...
-```
-In this example, Prometheus will lookup a list of targets in the file `/etc/prometheus/file_sd/targets.yml`. Prometheus will also pickup changes in the file automatically (without reloading) and adjust the list of targets accordingly.
-
+Besides the static target configuration, Prometheus provides many ways to dynamically add/remove targets. There are builtin service discovery mechanisms for cloud providers such as AWS, GCP, Hetzner, and many more. In addition, there are more versatile discovery mechanisms available which allow you to implement Prometheus in your environment (e.g., DNS service discovery or file service discovery). Most importantly, the Prometheus operator makes it very easy to let Prometheus discover targets dynamically using the Kubernetes API by looking up the `Endpoints` of a given Kubernetes `Service`. 
 
 {{% onlyWhen baloise %}}
 
