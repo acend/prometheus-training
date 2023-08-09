@@ -5,19 +5,9 @@ onlyWhen: baloise
 sectionnumber: 2.1
 ---
 
-In this first lab you are going to configure Prometheus to scrape the OpenShift-external targets by using file-based service discovery.
+In this lab you are going to configure Prometheus to scrape the OpenShift-external targets by using file-based service discovery.
 
-### Task {{% param sectionnumber %}}.1: Identify your monitoring repository
-
-Before we get started, take the time to familiarize yourself with the config repository of your team - it should already be available as described in [Deploying the Baloise Monitoring Stack](https://confluence.baloisenet.com/atlassian/display/BALMATE/01+-+Deploying+the+Baloise+Monitoring+Stack).
-
-The working directory for this training is the folder in your [team's config repository](http://{{% param replacePlaceholder.git %}}) with the `-monitoring` suffix. If necessary, create the directory `<team>-monitoring`.
-
-{{% alert title="Note" color="warning" %}}
-Please name all files created in this training with the filename prefix `training_`. This naming pattern will help in cleaning up all related files after training completion.
-{{% /alert %}}
-
-### Task {{% param sectionnumber %}}.2: Create static targets
+### Task {{% param sectionnumber %}}.1: Create static targets
 
 We are going to use the file-based service discovery mechanism that has been deployed on OpenShift. As file input you will create a ConfigMap defining the static targets.
 
