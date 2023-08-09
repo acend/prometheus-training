@@ -77,11 +77,11 @@ As you have already seen in several examples, a Prometheus metric is defined by 
 
 * instance
 
-     The instance label describes the endpoint where Prometheus scraped the metric. This can be any application or exporter. In addition to the ip address or hostname, this label usually also contains the port number. Example: `10.0.0.25:9100`
+     The instance label describes the endpoint where Prometheus scraped the metric. This can be any application or exporter. In addition to the ip address or hostname, this label usually also contains the port number. Example: `10.0.0.25:9100`.
 
 * job
 
-     This label contains the name of the scrape job as configured in the Prometheus configuration file. All instances configured in the same scrape job will share the same job label.
+     This label contains the name of the scrape job as configured in the Prometheus configuration file. All instances configured in the same scrape job will share the same job label. In a Kubernetes environment this relates to the `Service`-Name.
 
 
 {{% alert title="Note" color="primary" %}}
@@ -89,28 +89,33 @@ Prometheus will append these labels dynamically before sample ingestion. Therefo
 
 {{% /alert %}}
 
-Let's take a look at the following scrape config (example, no need to change the Prometheus configuration on your lab VM):
+Let's take a look at the following `ServiceMonitor` (example, no need to apply this to the cluster):
 
 ```yaml
-...
-scrape_configs:
-  ...
-  - job_name: "node_exporter"
-    static_configs:
-      - targets:
-        - "10.0.0.25:9100"
-        - "10.0.0.26:9100"
-        - "10.0.0.27:9100"
-  ...
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/name: example-web-python
+  name: example-web-python-monitor
+spec:
+  endpoints:
+  - interval: 30s
+    port: http
+    scheme: http
+    path: /metrics
+  selector:
+    matchLabels:
+      name: example-web-python-monitor
 ```
 
-In the example above we configured a single scrape job with the name `node_exporter` and three targets. After ingestion into Prometheus, every metric scraped by this job will have the label: `job="node_exporter"`. In addition, metrics scraped by this job from the target `10.0.0.25` will have the label `instance="10.0.0.25:9100"`
+In the example above we instructed Prometheus to scrape all Pods that are matched by the `Service` named `example-web-python-monitor`. After ingestion into Prometheus, every metric scraped by this job will have the label: `job="example-web-python-monitor"`. In addition, metrics scraped by this job from the Pod with IP `10.0.0.25` will have the label `instance="10.0.0.25:80"`
 
-## TODO Node Exporter theory
+## Node Exporter
 
-`node_exporter` is a Prometheus exporter for hardware and OS metrics. Or in other words, it supplies us with the more common metrics we know from classic monitoring systems.
-It is therefore very useful for expanding Prometheus' monitoring capabilities into the infrastructure world.
+The tasks of this chapter will all be based on metrics that are provided by the `node_exporter`. An exporter is generally used to expose metrics from an application or system that would otherwise not expose metrics natively in the Prometheus exposition format. You will learn more about other exporters in the lab TODO.
 
+In case of the `node_exporter`, the system we're interested in are Linux machines. It gathers the necessary information from different files and folders (e.g. `/proc/net/arp`, `/proc/sys/fs/file-nr`, etc.) and therefore is able to expose information about common metrics like CPU, Memory, Disk, Network, etc., which makes it very useful for expanding Prometheus' monitoring capabilities into the infrastructure world.
 
 ## Relabeling (advanced)
 
