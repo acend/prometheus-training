@@ -5,30 +5,68 @@ sectionnumber: 8.3
 onlyWhenNot: baloise
 ---
 
-### Task {{% param sectionnumber %}}.1: Troubleshooting Kubernetes Service Discovery TODO: rewrite
+### Task {{% param sectionnumber %}}.1: Troubleshooting Kubernetes Service Discovery
 
 We will now deploy an application with an error in the monitoring configration.
 
-* Deploy [Loki](https://grafana.com/oss/loki/) in the loki namespace
-
-```bash
-{{% param cliToolName %}} create ns loki
-{{% param cliToolName %}} -n loki create deployment loki \
---image=mirror.gcr.io/grafana/loki:latest
+* Deploy [Loki](https://grafana.com/oss/loki/) in your namespace by adding the following files to your git repo
+  * Deployment
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: loki
+  name: loki
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loki
+  template:
+    metadata:
+      labels:
+        app: loki
+    spec:
+      containers:
+      - image: mirror.gcr.io/grafana/loki:latest
+        name: loki
 ```
-
-* Create a Service for Loki
-
-```bash
-{{% param cliToolName %}} -n loki create -f \
-https://raw.githubusercontent.com/puzzle/prometheus-training/main/content/en/docs/01/labs/service-loki.yaml
+  * Service
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: loki
+  name: loki
+spec:
+  ports:
+    - name: http
+      port: 3100
+      protocol: TCP
+      targetPort: 3100
+  selector:
+    app: loki
+  type: NodePort
 ```
-
-* Create the Loki ServiceMonitor
-
-```bash
-{{% param cliToolName %}} -n loki create -f \
-https://raw.githubusercontent.com/puzzle/prometheus-training/main/content/en/docs/01/labs/servicemonitor-loki.yaml
+  * ServiceMonitor
+```yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/name: loki
+  name: loki
+spec:
+  endpoints:
+    - interval: 30s
+      port: http
+      scheme: http
+      path: /metrics
+  selector:
+    matchLabels:
+      prometheus-monitoring: 'true'
 ```
 
 * When you visit the [Prometheus user interface](http://{{% param replacePlaceholder.k8sPrometheus %}}/targets) you will notice, that the Prometheus Server does not scrape metrics from Loki. Try to find out why.
@@ -76,22 +114,22 @@ The quickest way to do this is to follow the instructions in the info box above.
 * The Endpoint appears in the [Prometheus configuration](http://{{% param replacePlaceholder.k8sPrometheus %}}/config) but not under targets.
   * Lets check if the application is running
     ```bash
-    {{% param cliToolName %}} -n loki get pod
+    {{% param cliToolName %}} get pod
     ```
-    The output should be similar to the following:
+    You should see a loki Pod in the `Running` state:
     ```bash
     NAME                    READY   STATUS    RESTARTS   AGE
     loki-5846d87f4c-tthsr   1/1     Running   0          34m
     ```
   * Lets check if the application is exposing metrics
     ```bash
-    PODNAME=$({{% param cliToolName %}} get pod -n loki -l app=loki -o name)
-    {{% param cliToolName %}} -n loki exec $PODNAME -it -- wget -O - localhost:3100/metrics
+    PODNAME=$({{% param cliToolName %}} get pod -l app=loki -o name)
+    {{% param cliToolName %}} exec $PODNAME -it -- wget -O - localhost:3100/metrics
     ...
     ```
   * The application exposes metrics and Prometheus generated the configuration according to the defined servicemonitor. Let's verify, if the ServiceMonitor matches the Service.
     ```bash
-    {{% param cliToolName %}} -n loki get svc loki -o yaml
+    {{% param cliToolName %}} get svc loki -o yaml
     ```
 
     ```yaml
@@ -111,7 +149,7 @@ The quickest way to do this is to follow the instructions in the info box above.
     ```
     We see that the Service has the port named `http` and the label `app: loki` set. Let's check the ServiceMonitor
     ```bash
-    {{% param cliToolName %}} -n loki get servicemonitor loki -o yaml
+    {{% param cliToolName %}} get servicemonitor loki -o yaml
     ```
 
     ```yaml
@@ -128,9 +166,24 @@ The quickest way to do this is to follow the instructions in the info box above.
         matchLabels:
           prometheus-monitoring: "true"
     ```
-    We see that the ServiceMonitor expect the port named `http` and a label `prometheus-monitoring: "true"` set. So the culprit is the missing label. Let's set the label on the Service.
-    ```bash
-    {{% param cliToolName %}} -n loki label svc loki prometheus-monitoring=true
+    We see that the ServiceMonitor expect the port named `http` and a label `prometheus-monitoring: "true"` set. So the culprit is the missing label. Let's adjust the service manifest, commit and push.
+    ```yaml
+    apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        app: loki
+        prometheus-monitoring=true
+      name: loki
+    spec:
+      ports:
+        - name: http
+          port: 3100
+          protocol: TCP
+          targetPort: 3100
+      selector:
+        app: loki
+      type: NodePort
     ```
 
     Verify that the target now gets scraped in the [Prometheus user interface](http://{{% param replacePlaceholder.k8sPrometheus %}}/targets).
