@@ -9,30 +9,11 @@ sectionnumber: 1
 ### Setup
 
 {{% onlyWhenNot baloise %}}
-The alertmanager is already installed on your system and can be controlled using systemctl:
-
-```bash
-# status
-sudo systemctl status alertmanager
-
-# start
-sudo systemctl start alertmanager
-
-# stop
-sudo systemctl stop alertmanager
-
-# restart
-sudo systemctl restart alertmanager
-
-# reload
-sudo systemctl reload alertmanager
-```
-
-The configuration file of alertmanager is located here: `/etc/alertmanager/alertmanager.yml`
+You will install Alertmanager in the following labs. We will have a look at the default configuration in the next chapter.
 
 ### Configuration
 
-Alertmanager's configuration is done using a YAML config file and CLI flags. Take a look at the very basic configuration file at `/etc/alertmanager/alertmanager.yml`:
+Alertmanager's configuration is done using a YAML config file. Take a look at the very basic default configuration file of Alertmanager:
 
 {{% /onlyWhenNot %}}
 {{% onlyWhen baloise %}}
@@ -192,6 +173,8 @@ templates: []
 {{% /onlyWhen %}}
 {{% onlyWhenNot baloise %}}
 
+//FIXME: Use the default of the kube-prometheus-stack
+
 ```yaml
 global:
   resolve_timeout: 5m
@@ -241,7 +224,7 @@ For more insights of the configuration options, study the following resources:
 
 ## Alerting rules in Prometheus
 
-[Prometheus alerting rules](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) are configured very similarly to recording rules which you got to know [earlier in this training](/docs/02#recording-rules). The main difference is that the rules expression contains a threshold (e.g., `query_expression >= 5`) and that an alert is sent to the Alertmanager in case the rule evaluation matches the threshold. An alerting rule can be based on a recording rule or be a normal expression query.
+[Prometheus alerting rules](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) are configured very similarly to recording rules which you will get to know later in this training. The main difference is that the rules expression contains a threshold (e.g., `query_expression >= 5`) and that an alert is sent to the Alertmanager in case the rule evaluation matches the threshold. An alerting rule can be based on a recording rule or be a normal expression query.
 
 {{% alert title="Note" color="primary" %}}
 Sometimes the community or the maintainer of your Prometheus exporter already provide generic Prometheus alerting rules that can be adapted to your needs. For this reason, it makes sense to do some research before writing alerting rules from scratch. Before implementing such a rule, you should always understand and verify the rule. Here are some examples:
