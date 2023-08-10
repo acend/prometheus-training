@@ -5,7 +5,7 @@ sectionnumber: 4.3
 onlyWhen: baloise
 ---
 
-### Task {{% param sectionnumber %}}.1: Deploy a database and use a sidecar container to expose metric TODO: references etc etc
+### Task {{% param sectionnumber %}}.1: Deploy a database and use a sidecar container to expose metric
 
 **Task description**:
 
