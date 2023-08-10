@@ -10,7 +10,9 @@ onlyWhenNot: baloise
 We will now deploy an application with an error in the monitoring configration.
 
 * Deploy [Loki](https://grafana.com/oss/loki/) in your namespace by adding the following files to your git repo
+
   * Deployment
+
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -32,7 +34,9 @@ spec:
       - image: mirror.gcr.io/grafana/loki:latest
         name: loki
 ```
+
   * Service
+
 ```yaml
 apiVersion: v1
 kind: Service
@@ -50,7 +54,9 @@ spec:
     app: loki
   type: NodePort
 ```
+
   * ServiceMonitor
+
 ```yaml
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
