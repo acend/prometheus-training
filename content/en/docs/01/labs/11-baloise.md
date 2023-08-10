@@ -3,7 +3,7 @@ title: "1.1 Tasks: Setup"
 weight: 1
 onlyWhen: baloise
 
-sectionnumber: 1
+sectionnumber: 1.1
 ---
 
 ## Executing oc commands
@@ -27,7 +27,7 @@ The working directory for this training is the folder in your [team's config rep
 Please name all files created in this training with the filename prefix `training_`. This naming pattern will help in cleaning up all related files after training completion.
 {{% /alert %}}
 
-## Task {{% param sectionnumber %}}.2: Deploy example application TODO: needs to be checked
+### Task {{% param sectionnumber %}}.2: Deploy example application
 
 {{% alert title="Note" color="primary" %}}
 We will deploy an application for demonstration purposes in our monitoring namespace. This should never be done for production use cases. If you are familiar with deploying on OpenShift, you can complete this lab by deploying the application on our test cluster.
@@ -90,7 +90,7 @@ python_gc_objects_collected_total{generation="2"} 15.0
 
 Since our newly deployed application now exposes metrics, the next thing we need to do, is to tell our Prometheus server to scrape metrics from the Kubernetes deployment. In a highly dynamic environment like Kubernetes this is done with so called Service Discovery.
 
-## Task {{% param sectionnumber %}}.3: Create a ServiceMonitor TODO: needs to be checked
+### Task {{% param sectionnumber %}}.3: Create a ServiceMonitor
 
 **Task description**:
 
