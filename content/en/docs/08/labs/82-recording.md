@@ -1,8 +1,10 @@
 ---
-title: "2.4 Tasks: Recording rules"
-weight: 2
-sectionnumber: 2.4
+title: "8.2 Recording Rules"
+weight: 82
+sectionnumber: 8.2
 ---
+
+Prometheus [recording rules](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) allow you to precompute queries at a defined interval (`global.evaluation_interval` or `interval` in `rule_group`) and save them to a new set of time series.
 
 In this lab you are going to create your first own recording rules. [Recording rules](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) are very useful when it comes to queries, which are very complex and take a long time to compute.
 The naming convention dictates to use the following format when naming recording rules `level:metric:operation`. Additional information regarding naming best-practices can be found [here](https://prometheus.io/docs/practices/rules/#naming-and-aggregation).

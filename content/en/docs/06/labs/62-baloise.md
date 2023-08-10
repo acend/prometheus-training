@@ -5,7 +5,7 @@ sectionnumber: 6.2
 onlyWhen: baloise
 ---
 
-### Task {{% param sectionnumber %}}.1: Troubleshooting Kubernetes Service Discovery TODO: rewrite
+### Task {{% param sectionnumber %}}.1: Troubleshooting Kubernetes Service Discovery
 
 We will now deploy an application with an error in the monitoring configration.
 

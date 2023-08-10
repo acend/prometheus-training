@@ -65,11 +65,6 @@ For now we focus on Counter and Gauge.
 
 Find additional information in the official [Prometheus Metric Types](https://prometheus.io/docs/concepts/metric_types/) docs.
 
-
-## Recording Rules
-
-Prometheus [recording rules](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) allow you to precompute queries at a defined interval (`global.evaluation_interval` or `interval` in `rule_group`) and save them to a new set of time series.
-
 ## Special labels
 
 As you have already seen in several examples, a Prometheus metric is defined by one or more labels with the corresponding values. Two of those labels are special, because the Prometheus server will automatically generate them for every metric:
