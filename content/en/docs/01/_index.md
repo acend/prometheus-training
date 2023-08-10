@@ -156,13 +156,3 @@ Have a look at the [Add Monitoring Targets outside of OpenShift](https://conflue
   * define a non default `scrape_interval`
 
 {{% /onlyWhen %}}
-
-## Collecting Application Metrics TODO: where
-
-When running applications in production, a fast feedback loop is a key factor. The following reasons show why it's essential to gather and combine all sorts of metrics when running an application in production:
-
-* To make sure that an application runs smoothly
-* To be able to see production issues and send alerts
-* To debug an application
-* To take business and architectural decisions
-* Metrics can also help to decide when to scale applications

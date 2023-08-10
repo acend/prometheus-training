@@ -34,3 +34,13 @@ Another approach to define metrics is based on [the four golden signals](https:/
 * Saturation
 
 There are other methods like [RED](https://www.weave.works/blog/the-red-method-key-metrics-for-microservices-architecture/) or [USE](http://www.brendangregg.com/usemethod.html) that go into the same direction.
+
+## Collecting Application Metrics
+
+When running applications in production, a fast feedback loop is a key factor. The following reasons show why it's essential to gather and combine all sorts of metrics when running an application in production:
+
+* To make sure that an application runs smoothly
+* To be able to see production issues and send alerts
+* To debug an application
+* To take business and architectural decisions
+* Metrics can also help to decide when to scale applications
