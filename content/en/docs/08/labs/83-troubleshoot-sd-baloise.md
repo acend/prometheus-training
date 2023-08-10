@@ -1,7 +1,7 @@
 ---
-title: "6.2 Tasks: Troubleshoot Kubernetes Service Discovery"
-weight: 2
-sectionnumber: 6.2
+title: "8.3 Tasks: Troubleshoot Kubernetes Service Discovery"
+weight: 83
+sectionnumber: 8.3
 onlyWhen: baloise
 ---
 
@@ -13,15 +13,15 @@ Deploy [Loki](https://grafana.com/oss/loki/) in the monitoring namespace.
 
 Create a deployment `training_loki-deployment.yaml`.
 
-{{< readfile file="/content/en/docs/06/labs/baloise_loki-deployment.yaml" code="true" lang="yaml" >}}
+{{< readfile file="/content/en/docs/08/labs/baloise_loki-deployment.yaml" code="true" lang="yaml" >}}
 
 Create a Service `training_service-loki.yaml`.
 
-{{< readfile file="/content/en/docs/06/labs/baloise_loki-service.yaml" code="true" lang="yaml" >}}
+{{< readfile file="/content/en/docs/08/labs/baloise_loki-service.yaml" code="true" lang="yaml" >}}
 
 Create the Loki ServiceMonitor `training_servicemonitor-loki.yaml`.
 
-{{< readfile file="/content/en/docs/06/labs/servicemonitor-loki.yaml" code="true" lang="yaml" >}}
+{{< readfile file="/content/en/docs/08/labs/servicemonitor-loki.yaml" code="true" lang="yaml" >}}
 
 * When you visit the [Prometheus user interface](http://{{% param replacePlaceholder.prometheus %}}/targets) you will notice that the Prometheus Server does not scrape metrics from Loki. Try to find out why.
 

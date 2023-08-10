@@ -1,7 +1,7 @@
 ---
-title: "6.2 Tasks: Troubleshoot Kubernetes Service Discovery"
-weight: 2
-sectionnumber: 6.2
+title: "8.3 Tasks: Troubleshoot Kubernetes Service Discovery"
+weight: 83
+sectionnumber: 8.3
 onlyWhenNot: baloise
 ---
 
