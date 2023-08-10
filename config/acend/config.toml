@@ -68,7 +68,7 @@ url = "https://www.acend.ch"
 
 [params]
 copyright = "acend gmbh"
-github_repo = "https://github.com/puzzle/prometheus-training"
+github_repo = "https://github.com/acend/prometheus-training"
 github_branch = "main"
 
 enabledModule = "base"
@@ -110,7 +110,7 @@ footer_about_disable = true
 [[params.links.developer]]
 name = "GitHub"
 icon = "fab fa-github"
-url = "https://github.com/puzzle/prometheus-training"
+url = "https://github.com/acend/prometheus-training"
 
 [[params.links.user]]
 name = "Twitter"

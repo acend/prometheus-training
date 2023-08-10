@@ -116,32 +116,3 @@ In the example above we instructed Prometheus to scrape all Pods that are matche
 The tasks of this chapter will all be based on metrics that are provided by the `node_exporter`. An exporter is generally used to expose metrics from an application or system that would otherwise not expose metrics natively in the Prometheus exposition format. You will learn more about other exporters in the lab TODO.
 
 In case of the `node_exporter`, the system we're interested in are Linux machines. It gathers the necessary information from different files and folders (e.g. `/proc/net/arp`, `/proc/sys/fs/file-nr`, etc.) and therefore is able to expose information about common metrics like CPU, Memory, Disk, Network, etc., which makes it very useful for expanding Prometheus' monitoring capabilities into the infrastructure world.
-
-## Relabeling (advanced)
-
-[Relabeling](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config) in Prometheus can be used to perform numerous tasks using regular expressions, such as
-
-* adding, modifying or removing labels to/from metrics or alerts,
-* filtering metrics based on labels, or
-* enabling horizontal scaling of Prometheus by using `hashmod` relabeling.
-
-It is a very powerful part of the Prometheus configuration, but it can also get quite complex and confusing. Thus, we will only take a look at some basic/simple examples.
-
-There are four types of relabelings:
-
-* `relabel_configs` (target relabeling)
-
-  Target relabeling is defined in the job definition of a `scrape_config`. This is used to configure scraping of a multi-target exporter (e.g., `blackbox_exporter` or `snmp_exporter`) where one single exporter instance is used to scrape multiple targets. Check out the [Prometheus docs](https://prometheus.io/docs/guides/multi-target-exporter/#querying-multi-target-exporters-with-prometheus) for a detailed explanation and example configurations of `relabel_configs`.
-
-* `metric_relabel_configs` (metrics relabeling)
-
-  Metrics relabeling is applied to scraped samples right before ingestion. It allows adding, modifying, or dropping labels or even dropping entire samples if they match certain criteria.
-
-* `alert_relabel_configs` (alert relabeling)
-
-  Alert relabeling is similar to `metric_relabel_configs`, but applies to outgoing alerts.
-
-* `write_relabel_configs` (remote write relabeling)
-
-  Remote write relabeling is similar to `metric_relabel_configs`, but applies to `remote_write` configurations.
-
