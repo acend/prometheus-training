@@ -16,6 +16,8 @@ You will notice that each Team Monitoring Stack has components on all clusters i
 
 ## kube-prometheus
 
+{{% onlyWhenNot baloise %}}
+
 The [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus) stack already provides an extensive Prometheus setup and contains a set of default alerts and dashboards from [Prometheus Monitoring Mixin for Kubernetes](https://github.com/kubernetes-monitoring/kubernetes-mixin). The following targets will be available.
 
 {{% /onlyWhenNot %}}
