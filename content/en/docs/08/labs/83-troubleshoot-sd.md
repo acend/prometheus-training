@@ -11,9 +11,8 @@ We will now deploy an application with an error in the monitoring configration.
 
 * Deploy [Loki](https://grafana.com/oss/loki/) in your namespace by adding the following files to your git repo
 
-  * Deployment
-
 ```yaml
+## Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -35,9 +34,8 @@ spec:
         name: loki
 ```
 
-  * Service
-
 ```yaml
+## Service
 apiVersion: v1
 kind: Service
 metadata:
@@ -55,9 +53,8 @@ spec:
   type: NodePort
 ```
 
-  * ServiceMonitor
-
 ```yaml
+## ServiceMonitor
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
