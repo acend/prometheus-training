@@ -18,7 +18,7 @@ In the tasks of this chapter we will configure two additional exporters.
 
 ### Blackbox exporter
 
-This is a classic example of a multi-target exporter which uses relabeling to pass the targets to the exporter. This exporter is capable of probing the following endpoints:
+This is a classic example of a so-called multi-target exporter which uses relabeling to pass the targets to the exporter. This exporter is capable of probing the following endpoints:
 
 * HTTP
 * HTTPS

@@ -37,7 +37,7 @@ spec:
         env: nonprod
 ```
 
-You can simulate this by directly running a curl inside the prometheus pod on this url. The `probe_success` metric should have the value `1`.
+You can simulate this by directly running a curl inside the prometheus pod on this URL. The `probe_success` metric should have the value `1`.
 
 {{% alert title="Note" color="primary" %}}
 Execute the following `oc` commands using one of those options:
