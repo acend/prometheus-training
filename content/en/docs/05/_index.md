@@ -38,7 +38,7 @@ kube_daemonset_status_number_misscheduled
 ...
 ```
 
-**kubelet/cAdvisor:** [Advisor](https://github.com/google/cadvisor) exposes usage and performance metrics about running container. Commonly used to observe memory usage or [CPU throttling](https://kubernetes.io/docs/tasks/configure-pod-container/assign-cpu-resource/).
+**cAdvisor:** [cAdvisor](https://github.com/google/cadvisor) exposes usage and performance metrics about running container. Commonly used to observe memory usage or [CPU throttling](https://kubernetes.io/docs/tasks/configure-pod-container/assign-cpu-resource/).
 
 ```promql
 # Example metrics
@@ -68,7 +68,7 @@ apiserver_request_total{code="200",...}
 ```
 {{% /onlyWhenNot %}}
 
-**kubelet/probes:** Expose metrics about [Kubernetes liveness, readiness and startup probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) Normally you would not alert on Kubernetes probe metrics, but on container restarts exposed by `kube-state-metrics`.
+**probes:** Expose metrics about [Kubernetes liveness, readiness and startup probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) Normally you would not alert on Kubernetes probe metrics, but on container restarts exposed by `kube-state-metrics`.
 
 ```promql
 # Example metrics
