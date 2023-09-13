@@ -111,7 +111,9 @@ Create the following ServiceMonitor (`training_python-servicemonitor.yaml`):
 
 {{< readfile file="/content/en/docs/01/labs/baloise_python-servicemonitor.yaml" code="true" lang="yaml" >}}
 
-Verify that the target gets scraped in the [Prometheus user interface](http://{{% param replacePlaceholder.prometheus %}}) (either on CAASI or CAAST, depending where you deployed the application). Target name: `serviceMonitor/<team>-monitoring/example-web-python-monitor/0` (it may take up to a minute for Prometheus to load the new
+Verify that the target gets scraped in the [Prometheus user interface](http://{{% param replacePlaceholder.prometheus %}}) (either on CAASI or CAAST, depending where you deployed the application). 
+
+Navigate to the list of targets by clicking `Status` and then `Targets` in the menu. Target name: `serviceMonitor/<team>-monitoring/example-web-python-monitor/0` (it may take up to a minute for Prometheus to load the new
 configuration and scrape the metrics).
 
 {{% /details %}}

@@ -36,7 +36,7 @@ There are two basic types of targets that we can add to our Prometheus server:
 
 ### Static targets
 
-In this case, we define one or more targets statically. In order to make changes to the list, you need to change the configuration file. As the name implies, this way of defining targets is inflexible and not suited to monitor workload inside of Kubernetes as these are highly dynamic.
+In this case, we define one or more targets statically. In order to make changes to the list, you need to change the configuration file. As the name implies, this way of defining targets is inflexible and not suited to monitor workloads inside of Kubernetes as these are highly dynamic.
 
 {{% onlyWhenNot baloise %}}
 TODO: We currently have no example of a static target in the labs for non-baloise. Do we keep it that way?
@@ -47,7 +47,7 @@ We will use this type of configuration in the task [2.1](/docs/02/labs/21-balois
 
 ### Dynamic configuration
 
-Besides the static target configuration, Prometheus provides many ways to dynamically add/remove targets. There are builtin service discovery mechanisms for cloud providers such as AWS, GCP, Hetzner, and many more. In addition, there are more versatile discovery mechanisms available which allow you to implement Prometheus in your environment (e.g., DNS service discovery or file service discovery). Most importantly, the Prometheus operator makes it very easy to let Prometheus discover targets dynamically using the Kubernetes API.
+Besides the static target configuration, Prometheus provides many ways to dynamically add/remove targets. There are builtin service discovery mechanisms for cloud providers such as AWS, GCP, Hetzner, and many more. In addition, there are more versatile discovery mechanisms available which allow you to implement Prometheus in your environment (e.g. DNS service discovery or file service discovery). Most importantly, the Prometheus Operator makes it very easy to let Prometheus discover targets dynamically using the Kubernetes API.
 
 ## Prometheus Operator
 
@@ -59,18 +59,18 @@ The Prometheus Operator is the preferred way of running Prometheus inside of a K
 * [PrometheusRule](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#prometheusrule): Manage the Prometheus rules of your Prometheus
 * [AlertmanagerConfig](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#alertmanagerconfig): Add additional receivers and routes to your existing Alertmanager configuration
 * [PodMonitor](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#podmonitor): Generate Kubernetes service discovery scrape configuration based on Kubernetes pod definitions
-* [Probe](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#probe): Custom resource to manage Prometheus blackbox exporter targets
+* [Probe](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#probe): Manage Prometheus blackbox exporter targets
 * [ThanosRuler](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#thanosruler): Manage [Thanos rulers](https://github.com/thanos-io/thanos/blob/main/docs/components/rule.md)
 
 ### Service Discovery
 
-When configuring Prometheus to scrape metrics from Containers deployed in a Kubernetes Cluster it doesn't really make sense to configure every single target manually. That would be far too static and wouldn't really work in a highly dynamic environment.
+As discussed above, when configuring Prometheus to scrape metrics from containers deployed in a Kubernetes Cluster it doesn't really make sense to configure every single target manually. That would be far too static and wouldn't really work in a highly dynamic environment.
 
-In fact, we tightly integrate Prometheus with Kubernetes and let Prometheus discover the targets, which need to be scraped automatically via the Kubernetes API.
+In fact, we tightly integrate Prometheus with Kubernetes and let Prometheus discover the targets, which need to be scraped, automatically via the Kubernetes API.
 
 The tight integration between Prometheus and Kubernetes can be configured with the [Kubernetes Service Discovery Config](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config).
 
-We can instruct Prometheus to scrape our application metrics from the sample application by creating a `ServiceMonitor`.
+The way we instruct Prometheus to scrape metrics from an application running as a Pod is by creating a `ServiceMonitor`.
 
 ServiceMonitors are Kubernetes custom resources, which look like this:
 
@@ -94,9 +94,9 @@ spec:
 
 #### How does it work
 
-The Prometheus Operator watches namespaces for ServiceMonitor custom resources. It then updates the Service Discovery configuration of the Prometheus server(s) accordingly.
+The Prometheus Operator watches namespaces for `ServiceMonitor` custom resources. It then updates the Service Discovery configuration of the Prometheus server(s) accordingly.
 
-The selector part in the ServiceMonitor defines which Kubernetes Services will be scraped. Here we are selecting the correct service by defining a selector on the label `prometheus-monitoring: 'true'`.
+The selector part in the `ServiceMonitor` defines which Kubernetes Services will be scraped. Here we are selecting the correct service by defining a selector on the label `prometheus-monitoring: 'true'`.
 
 ```yaml
 # servicemonitor.yaml
@@ -107,7 +107,7 @@ The selector part in the ServiceMonitor defines which Kubernetes Services will b
 ...
 ```
 
-The corresponding Service needs to have this label set:
+The corresponding `Service` needs to have this label set:
 
 ```yaml
 apiVersion: v1
@@ -119,26 +119,24 @@ metadata:
 ...
 ```
 
-The Prometheus Operator then determines all `Endpoints` that belong to this `Service` using the Kubernetes API. The `Endpoints` are then dynamically added as targets to the Prometheus server(s).
+The Prometheus Operator then determines all `Endpoints`(which are basically the IPs of the Pods) that belong to this `Service` using the Kubernetes API. The `Endpoints` are then dynamically added as targets to the Prometheus server(s).
 
-The `spec` section in the ServiceMonitor resource allows to further configure the targets.
+The `spec` section in the ServiceMonitor resource allows further configuration on how to scrape the targets.
 In our case Prometheus will scrape:
 
 * Every 30 seconds
-* Look for a port with the name `http` (this must match the name in the Service resource)
+* Look for a port with the name `http` (this must match the name in the `Service` resource)
 * Scrape metrics from the path `/metrics` using `http`
 
 ### Best practices
 
 Use the common k8s labels <https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/>
 
-If possible, reduce the number of different ServiceMonitors for an application and thereby reduce the overall complexity.
+If possible, reduce the number of different `ServiceMonitors` for an application and thereby reduce the overall complexity.
 
-* Use the same `matchLabels` on different Services for your application (e.g. Frontend Service, Backend Service, Database Service)
-* Also make sure the ports of different Services have the same name
+* Use the same `matchLabels` on different `Services` for your application (e.g. Frontend Service, Backend Service, Database Service)
+* Also make sure the ports of different `Services` have the same name
 * Expose your metrics under the same path
-
-Avoid relabeling and use standards or change the metric labels within the exporter.
 
 {{% onlyWhen baloise %}}
 
@@ -146,7 +144,7 @@ Avoid relabeling and use standards or change the metric labels within the export
 
 Have a look at the [Add Monitoring Targets outside of OpenShift](https://confluence.baloisenet.com/atlassian/display/BALMATE/02+-+Add+your+application+as+monitoring+target#id-02Addyourapplicationasmonitoringtarget-AddMonitoringTargetsoutsideofOpenShift) documentation. There are two ways to add machines outside of OpenShift to your monitoring stack.
 
-* Using `File Service Discovery` you have the following options
+* Using `File Service Discovery` you have the following options (lab [2.1](/docs/02/labs/21-baloise/))
   * Add targets using TLS and using the default credentials provided
   * Add targets without TLS and authentication
 * You can use the approach with `ServiceMonitors`, which provides more flexibility for cases like
