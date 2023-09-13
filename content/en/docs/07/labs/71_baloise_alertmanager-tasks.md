@@ -116,7 +116,6 @@ $ oc -n examples-monitoring exec -it sts/alertmanager-alertmanager -- amtool con
 Routing tree:
 .
 └── default-route  receiver: default
-    └── {severity=~"^(?:critical|warning)$"}  continue: true  receiver: mail-critical
 ```
 
 ### Task {{% param sectionnumber %}}.4: Silencing alerts

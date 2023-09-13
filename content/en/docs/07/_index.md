@@ -10,19 +10,60 @@ sectionnumber: 1
 
 {{% onlyWhenNot baloise %}}
 You will install Alertmanager in the following labs. We will have a look at the default configuration in the next chapter.
-
-### Configuration
-
-Alertmanager's configuration is done using a YAML config file. Take a look at the very basic default configuration file of Alertmanager:
-
 {{% /onlyWhenNot %}}
+
 {{% onlyWhen baloise %}}
-
 At Baloise the [Alertmanger](http://{{% param replacePlaceholder.alertmanager %}}) is part of the managed monitoring stack and does not need to be installed. We will have a look at the default configuration in the next chapter.
+{{% /onlyWhen %}}
 
-### Configuration
+## Configuration in Alertmanager
 
-Alertmanager's configuration is managed by the monitoring stack and can be configured using a YAML config file and CLI flags. Take a look at the default configuration in use at Baloise:
+Alertmanager's configuration is done using a YAML config file. There are two main sections for configuring how Alertmanager is dispatching alerts: receivers and routing.
+
+### Receivers
+
+With a [receiver](https://prometheus.io/docs/alerting/latest/configuration/#receiver), one or more notifications can be defined. There are different types of notifications types, e.g. mail, webhook, or one of the message platforms like Slack or PagerDuty.
+
+### Routing
+
+With [routing blocks](https://prometheus.io/docs/alerting/latest/configuration/#route), a tree of routes and child routes can be defined. Each routing block has a matcher which can match one or several labels of an alert. Per block, one receiver can be specified, or if empty, the default receiver is taken.
+
+### amtool
+
+As routing definitions might be very complex and hard to understand, [amtool](https://github.com/prometheus/alertmanager#examples) becomes handy as it helps to test the rules. It can also generate test alerts and has even more useful features. More about this in the labs.
+
+### Default Configuration
+
+{{% onlyWhenNot baloise %}}
+Take a look at the very basic default configuration file of Alertmanager:
+
+//FIXME: Use the default of the kube-prometheus-stack
+
+```yaml
+global:
+  resolve_timeout: 5m
+
+route:
+  group_by: ['alertname']
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 1h
+  receiver: 'web.hook'
+receivers:
+- name: 'web.hook'
+  webhook_configs:
+  - url: 'http://127.0.0.1:5001/'
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'dev', 'instance']
+```
+{{% /onlyWhenNot %}}
+
+{{% onlyWhen baloise %}}
+Alertmanager's configuration is managed by the monitoring stack. Take a look at the default configuration in use at Baloise:
 
 ```yaml
 # baloise config
@@ -171,49 +212,6 @@ templates: []
 ```
 
 {{% /onlyWhen %}}
-{{% onlyWhenNot baloise %}}
-
-//FIXME: Use the default of the kube-prometheus-stack
-
-```yaml
-global:
-  resolve_timeout: 5m
-
-route:
-  group_by: ['alertname']
-  group_wait: 10s
-  group_interval: 10s
-  repeat_interval: 1h
-  receiver: 'web.hook'
-receivers:
-- name: 'web.hook'
-  webhook_configs:
-  - url: 'http://127.0.0.1:5001/'
-inhibit_rules:
-  - source_match:
-      severity: 'critical'
-    target_match:
-      severity: 'warning'
-    equal: ['alertname', 'dev', 'instance']
-```
-
-{{% /onlyWhenNot %}}
-
-## Configuration in Alertmanager
-
-There are two main sections for configuring how Alertmanager is dispatching alerts: receivers and routing.
-
-### Receivers
-
-With a [receiver](https://prometheus.io/docs/alerting/latest/configuration/#receiver), one or more notifications can be defined. There are different types of notifications types, e.g. mail, webhook, or one of the message platforms like Slack or PagerDuty.
-
-### Routing
-
-With [routing blocks](https://prometheus.io/docs/alerting/latest/configuration/#route), a tree of routes and child routes can be defined. Each routing block has a matcher which can match one or several labels of an alert. Per block, one receiver can be specified, or if empty, the default receiver is taken.
-
-### amtool
-
-As routing definitions might be very complex and hard to understand, [amtool](https://github.com/prometheus/alertmanager#examples) becomes handy as it helps to test the rules. It can also generate test alerts and has even more useful features. More about this in the labs.
 
 ### More (advanced) options
 
