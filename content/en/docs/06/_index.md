@@ -14,7 +14,7 @@ Even if you don't plan to provide your own metrics, those libraries already expo
 
 ## Specifications and conventions
 
-Application metrics or metrics in general can contain confidential information, therefore endpoints should be protected from unauthenticated users. This can be achieved either by exposing the metrics on a different port, which is only reachable by prometheus or by protecting the metrics endpoints with some sort of authentication.
+Application metrics or metrics in general can contain confidential information, therefore endpoints should be protected from unauthenticated users. This can be achieved either by exposing the metrics on a different port, which is only reachable by Prometheus or by protecting the metrics endpoints with some sort of authentication.
 
 There are some guidelines and best practices how to name your own metrics. Of course, the [specifications of the datamodel](https://prometheus.io/docs/concepts/data_model/#metric-names-and-labels) must be followed and applying the [best practices about naming](https://prometheus.io/docs/practices/naming/) is not a bad idea. All those guidelines and best practices are now officially specified in [openmetrics.io](https://openmetrics.io).
 
