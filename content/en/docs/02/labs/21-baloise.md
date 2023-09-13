@@ -5,13 +5,13 @@ onlyWhen: baloise
 sectionnumber: 2.1
 ---
 
-In this lab you are going to configure Prometheus to scrape the OpenShift-external targets by using file-based service discovery.
+In this lab you are going to configure Prometheus to scrape OpenShift-external targets by using file-based service discovery.
 
 ### Task {{% param sectionnumber %}}.1: Create static targets
 
-We are going to use the file-based service discovery mechanism that has been deployed on OpenShift. As file input you will create a ConfigMap defining the static targets.
+We are going to use the file-based service discovery mechanism that has been deployed on OpenShift (documented in [Confluence](https://confluence.baloisenet.com/atlassian/display/BALMATE/02+-+Add+your+application+as+monitoring+target#id-02Addyourapplicationasmonitoringtarget-AddMonitoringTargetsoutsideofOpenShift)). As file input you will create a ConfigMap defining the static targets.
 
-In the monitoring folder within your repository, create a YAML file `training_target.yaml` defining a ConfigMap and add the file to your repository. You can take the example below as an inspiration.
+In the monitoring folder within your repository, create a YAML file `training_target.yaml` defining a ConfigMap and add the file to your repository. Use the following example:
 
 ```yaml
 apiVersion: v1

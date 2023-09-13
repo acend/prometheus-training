@@ -13,7 +13,7 @@ Prometheus consumes metrics in Prometheus text-based exposition format and plans
 
 Optionally check [Prometheus Exposition Format](https://prometheus.io/docs/instrumenting/exposition_formats/) for a more detailed explanation of the format.
 
-All metrics withing Prometheus are scraped, stored and queried in the following format:
+All metrics within Prometheus are scraped, stored and queried in the following format:
 ```promql
 # HELP <metric name> <info>
 # TYPE <metric name> <metric type>
@@ -72,7 +72,7 @@ As you have already seen in several examples, a Prometheus metric is defined by 
 
 * instance
 
-     The instance label describes the endpoint where Prometheus scraped the metric. This can be any application or exporter. In addition to the ip address or hostname, this label usually also contains the port number. Example: `10.0.0.25:9100`.
+     The instance label describes the endpoint where Prometheus scraped the metric. This can be any application or exporter. In addition to the IP address or hostname, this label usually also contains the port number. Example: `10.0.0.25:9100`.
 
 * job
 
