@@ -65,6 +65,7 @@ To send a test alert with the labels `alertname=Up` and `node=bar` you can simpl
 As you will be executing some `oc` commands in the following labs, make sure you are logged in to your OpenShift Cluster.
 
 You can copy the login Command from the OpenShift UI:
+
 * Browse to <http://{{% param replacePlaceholder.openshift_console %}}>
 * Click on your name in the top right
 * `Copy login command`

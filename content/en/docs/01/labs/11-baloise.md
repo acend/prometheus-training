@@ -12,6 +12,7 @@ sectionnumber: 1.1
 As you will be executing some `oc` commands in the following labs, make sure you have the tool installed and are logged in to your OpenShift Cluster.
 
 You can copy the login Command from the OpenShift UI:
+
 * Browse to <http://{{% param replacePlaceholder.openshift_console %}}>
 * Click on your name in the top right
 * `Copy login command`
