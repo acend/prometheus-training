@@ -180,7 +180,6 @@ amtool alert add --alertmanager.url=http://localhost:9093 env=dev severity=criti
 
 {{% alert title="Note" color="primary" %}}
 Alerts with the label `severity=critical` will send a mail to the defined `responsible` mail address in the teams [root configuration](https://bitbucket.balgroupit.com/projects/OSDPL/repos/apps-global-config/browse) and post the alert as a message in the defined Teams channel (if enabled).
-Therefore, inform your team before triggering the alert or skip this task.
 {{% /alert %}}
 
 

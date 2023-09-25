@@ -43,7 +43,7 @@ Verify in the [web UI](http://{{% param replacePlaceholder.prometheus %}}).
 As you can see, the target is down and cannot be scraped by Prometheus. The reason is provided in the error message: `Get "https://myhost1.balgroupit.com:9100/metrics": dial tcp: lookup myhost1.balgroupit.com on 172.24.0.10:53: no such host`
 
 {{% alert title="Note" color="warning" %}}
-Other targets may already be defined, either through automation provided by the CMDB or by other team members. You can ignore these for now.
+Other targets may already be defined. You can ignore these for now.
 {{% /alert %}}
 
 In our example we used a non-existing host `myhost1.balgroupit.com`. To fix this, use the existing host `prometheus-training.balgroupit.com` as your target.
