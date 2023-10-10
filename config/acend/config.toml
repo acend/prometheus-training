@@ -75,6 +75,9 @@ enabledModule = "base"
 modeSwitcher = "true"
 distroName = "Kubernetes"
 cliToolName = "kubectl"
+argoCdUrl = "argocd.training.cluster.acend.ch"
+giteaUrl = "gitea.training.cluster.acend.ch"
+prometheusUrl = "userX-prometheus.training.cluster.acend.ch/"
 
 [params.replaceContent]
 allowedHrefHosts = ['localhost', 'puzzle.ch', 'acend.ch']

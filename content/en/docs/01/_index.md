@@ -8,12 +8,115 @@ sectionnumber: 1
 
 ## Working mode (GitOps)
 
-TODO: How to work with the repo etc.
+During the labs you will deploy and update several resources on your Kubernetes environment. [ArgoCD](https://{{% param argoCdUrl %}}) will be your primary interface to interact with the cluster and will simplify the GitOps process for you.
+
+{{% alert title="Note" color="primary" %}}
+Argo CD is a part of the Argo Project and affiliated under the Cloud Native Computing Foundation (CNCF) . The project is just under three years old, completely open source, and primarily implemented in Go.
+
+As the name suggests, Argo CD takes care of the continuous delivery aspect of CI/CD. The core of Argo CD consists of a Kubernetes controller, which continuously compares the live-state with the desired-state. The live-state is tapped from the Kubernetes API, and the desired-state is persisted in the form of manifests in YAML or JSON in a Git repository. Argo CD helps to point out deviations of the states, to display the deviations or to autonomously restore the desired state.
+{{% /alert %}}
+
+The configuration and deployments needed for you are already in a git repository. Navigate to your [Gitea](https://{{% param giteaUrl %}}) and look for a project called 'prometheus-training-lab-setup'. The repository consists of two [Helm](https://helm.sh/) Charts you will further use in this lab. In this first section we will no setup your Prometheus instance step by step.
 
 ## Installation
 
+### Create ArgoCD Application
+
+For ArgoCD to synchronize applications we need to create a Kubernetes Custom Resource called Application. The Application creates a logical connection between a Kubernetes namespace and a git repository to synchronize. Log into the ArgoCD instance and verify that there is no project called 'userX-prom-stack' (replace the userX with your user id).
+
+To start we create the namespace your prometheus will be deployed in:
+
+`kubectl create namespace userX-monitoring`
+
+Create a file called `user-prom-stack-app.yaml` in your editor with the following content:
+
+```
+{{< highlight YAML >}}
+---
+kind: Application
+metadata:
+  name: user4-prom-stack
+  namespace: argocd
+spec:
+  destination:
+    namespace: userX-monitoring
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: 'https://gitea.training.cluster.acend.ch/userX/prometheus-training-lab-setup'
+    path: charts/user-monitoring/
+    targetRevision: main
+    helm:
+      values: |
+        user: userX
+        # alertmanager
+        alertmanager:
+          enabled: false
+        # grafana
+        grafana:
+          enabled: false
+        # prometheus
+        prometheus:
+          enabled: true
+        # pushgateway
+        pushgateway:
+          enabled: false
+        # thanos-ruler
+        ruler:
+          enabled: false
+        # thanos-query
+        query:
+          enabled: false
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{< / highlight >}}
+```
+
+Apply the manifest, creating your ArgoCD application:
+
+```
+kubectl -n argocd create -f user-prom-stack-app.yaml
+```
+
+Head over to the [ArgoCD UI](https://{{% param argoCdUrl %}}) and verify that the synchronization process of your application is synced and healthy. As soon as your application is healthy and synced (green status on top) you are good to go and have your prometheus instance ready.
+
+When all has finished syncing, you can inspect your prometheus installation in your namespace:
+
+```
+kubectl -n userX-monitoring get prometheus prometheus -oyaml
+```
+
 ### Setup and configure Prometheus
 
+In the prometheus custom resource's spec block you can find various configuration options:
+
+```yaml
+spec:
+  enableAdminAPI: true
+  evaluationInterval: 30s
+  externalLabels:
+    monitoring: user4
+  podMonitorNamespaceSelector:
+    matchLabels:
+      user: userX
+  podMonitorSelector: {}
+  portName: web
+  probeNamespaceSelector:
+    matchLabels:
+      user: userX
+  probeSelector: {}
+  resources:
+    requests:
+      memory: 400Mi
+  scrapeInterval: 10s
+  serviceAccountName: prometheus-userX
+  serviceMonitorNamespaceSelector:
+    matchLabels:
+      user: userX
+  serviceMonitorSelector: {}
+  ```
 TODO: Describe the values that we set in the config: Things like scrape interval: (Prometheus is a pull-based monitoring system which means it will reach out to the configured targets and collect the metrics from them (instead of a push-based approach where the targets will push their metrics to the monitoring server). The option `scrape_interval` defines the interval at which Prometheus will collect the metrics for each target)
 
 {{% alert title="Note" color="primary" %}}
@@ -24,7 +127,7 @@ TODO: Alternatively just switch the branch of your repo to XY.
 
 ### Check Prometheus
 
-TODO: Is your prometheus running? Use your browser to navigate to <http://{{% param replacePlaceholder.prometheus %}}> . You should now see the Prometheus web UI.
+Is your prometheus running? Use your browser to navigate to https://{{% param prometheusUrl %}} . You should now see the Prometheus web UI.
 
 {{% /onlyWhenNot %}}
 
