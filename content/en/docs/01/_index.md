@@ -4,7 +4,13 @@ weight: 1
 sectionnumber: 1
 ---
 
+{{% onlyWhen baloise %}}
+In this first section we are going to eplore the already set up Prometheus stack. Each trainee will have their own stack to work with.
+{{% /onlyWhen %}}
+
 {{% onlyWhenNot baloise %}}
+In this first section we are going to set up our first parts of the Prometheus stack. Each trainee will have their own stack installed and configured.
+
 
 ## Working mode (GitOps)
 
@@ -18,122 +24,17 @@ As the name suggests, Argo CD takes care of the continuous delivery aspect of CI
 
 The configuration and deployments needed for you are already in a git repository. Navigate to your [Gitea](https://{{% param giteaUrl %}}) and look for a project called 'prometheus-training-lab-setup'. The repository consists of two [Helm](https://helm.sh/) Charts you will further use in this lab. In this first section we will no setup your Prometheus instance step by step.
 
-## Installation
+We're going to use two main Namespaces for the lab
 
-### Create ArgoCD Application
-
-For ArgoCD to synchronize applications we need to create a Kubernetes Custom Resource called Application. The Application creates a logical connection between a Kubernetes namespace and a git repository to synchronize. Log into the ArgoCD instance and verify that there is no project called 'userX-prom-stack' (replace the userX with your user id).
-
-To start we create the namespace your prometheus will be deployed in:
-
-`kubectl create namespace userX-monitoring`
-
-Create a file called `user-prom-stack-app.yaml` in your editor with the following content:
-
-```
-{{< highlight YAML >}}
----
-kind: Application
-metadata:
-  name: user4-prom-stack
-  namespace: argocd
-spec:
-  destination:
-    namespace: userX-monitoring
-    server: https://kubernetes.default.svc
-  project: default
-  source:
-    repoURL: 'https://gitea.training.cluster.acend.ch/userX/prometheus-training-lab-setup'
-    path: charts/user-monitoring/
-    targetRevision: main
-    helm:
-      values: |
-        user: userX
-        # alertmanager
-        alertmanager:
-          enabled: false
-        # grafana
-        grafana:
-          enabled: false
-        # prometheus
-        prometheus:
-          enabled: true
-        # pushgateway
-        pushgateway:
-          enabled: false
-        # thanos-ruler
-        ruler:
-          enabled: false
-        # thanos-query
-        query:
-          enabled: false
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-{{< / highlight >}}
-```
-
-Apply the manifest, creating your ArgoCD application:
-
-```
-kubectl -n argocd create -f user-prom-stack-app.yaml
-```
-
-Head over to the [ArgoCD UI](https://{{% param argoCdUrl %}}) and verify that the synchronization process of your application is synced and healthy. As soon as your application is healthy and synced (green status on top) you are good to go and have your prometheus instance ready.
-
-When all has finished syncing, you can inspect your prometheus installation in your namespace:
-
-```
-kubectl -n userX-monitoring get prometheus prometheus -oyaml
-```
-
-### Setup and configure Prometheus
-
-In the prometheus custom resource's spec block you can find various configuration options:
-
-```yaml
-spec:
-  enableAdminAPI: true
-  evaluationInterval: 30s
-  externalLabels:
-    monitoring: user4
-  podMonitorNamespaceSelector:
-    matchLabels:
-      user: userX
-  podMonitorSelector: {}
-  portName: web
-  probeNamespaceSelector:
-    matchLabels:
-      user: userX
-  probeSelector: {}
-  resources:
-    requests:
-      memory: 400Mi
-  scrapeInterval: 10s
-  serviceAccountName: prometheus-userX
-  serviceMonitorNamespaceSelector:
-    matchLabels:
-      user: userX
-  serviceMonitorSelector: {}
-  ```
-TODO: Describe the values that we set in the config: Things like scrape interval: (Prometheus is a pull-based monitoring system which means it will reach out to the configured targets and collect the metrics from them (instead of a push-based approach where the targets will push their metrics to the monitoring server). The option `scrape_interval` defines the interval at which Prometheus will collect the metrics for each target)
-
-{{% alert title="Note" color="primary" %}}
-We will learn more about other configuration options (`evaluation_interval`, TODO: other settings visible in the CR) later in this training.
-{{% /alert %}}
-
-TODO: Alternatively just switch the branch of your repo to XY.
-
-### Check Prometheus
-
-Is your prometheus running? Use your browser to navigate to https://{{% param prometheusUrl %}} . You should now see the Prometheus web UI.
+* `<user>` - where the user workload (Demo application, Webshell) is deployed
+* `<user>-monitoring` - where we deploy our monitoring stack to
 
 {{% /onlyWhenNot %}}
 
-## Targets
 
-Since Prometheus is a pull-based monitoring system, the Prometheus server maintains a set of targets to scrape. This set can be configured using the `scrape_configs` option in the Prometheus configuration file. The `scrape_configs` consist of a list of jobs defining the targets as well as additional parameters (path, port, authentication, etc.) which are required to scrape these targets. As we will be using the Prometheus Operator on Kubernetes, we will never actually touch this configuration file by ourselves. Instead, we rely on the abstractions provided by the Operator, which we will look at closer in the next section.
+## How do metrics end up in Prometheus?
+
+Since Prometheus is a pull-based monitoring system, the Prometheus server maintains a set of **targets** to scrape. This set can be configured using the `scrape_configs` option in the Prometheus configuration file. The `scrape_configs` consist of a list of jobs defining the targets as well as additional parameters (path, port, authentication, etc.) which are required to scrape these targets. As we will be using the Prometheus Operator on Kubernetes, we will never actually touch this configuration file by ourselves. Instead, we rely on the abstractions provided by the Operator, which we will look at closer in the next section.
 
 There are two basic types of targets that we can add to our Prometheus server:
 
@@ -167,7 +68,7 @@ The Prometheus Operator is the preferred way of running Prometheus inside of a K
 
 ### Service Discovery
 
-As discussed above, when configuring Prometheus to scrape metrics from containers deployed in a Kubernetes Cluster it doesn't really make sense to configure every single target manually. That would be far too static and wouldn't really work in a highly dynamic environment.
+When configuring Prometheus to scrape metrics from containers deployed in a Kubernetes Cluster it doesn't really make sense to configure every single target (Pod) manually. That would be far too static and wouldn't really work in a highly dynamic environment. A container platform is too dynamic. Pods can be scaled, the names are random and so on.
 
 In fact, we tightly integrate Prometheus with Kubernetes and let Prometheus discover the targets, which need to be scraped, automatically via the Kubernetes API.
 
@@ -178,6 +79,7 @@ The way we instruct Prometheus to scrape metrics from an application running as 
 ServiceMonitors are Kubernetes custom resources, which look like this:
 
 ```yaml
+# just an example
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
