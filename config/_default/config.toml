@@ -73,7 +73,9 @@ github_branch = "main"
 
 argoCdUrl = "argocd.training.cluster.acend.ch"
 giteaUrl = "gitea.training.cluster.acend.ch"
-prometheusUrl = "userX-prometheus.training.cluster.acend.ch/"
+prometheusUrl = "userX-prometheus.training.cluster.acend.ch"
+grafanaUrl = "userX-grafana.training.cluster.acend.ch"
+
 
 imagePrefix = "puzzle_"
 enabledModule = "base"
