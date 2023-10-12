@@ -1,0 +1,166 @@
+---
+title: "8.2 Recording Rules"
+weight: 82
+sectionnumber: 8.2
+---
+
+Prometheus [recording rules](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) allow you to precompute queries at a defined interval (`global.evaluation_interval` or `interval` in `rule_group`) and save them to a new set of time series.
+
+In this lab you are going to create your first own recording rules. [Recording rules](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) are very useful when it comes to queries, which are very complex and take a long time to compute.
+The naming convention dictates to use the following format when naming recording rules `level:metric:operation`. Additional information regarding naming best-practices can be found [here](https://prometheus.io/docs/practices/rules/#naming-and-aggregation).
+
+{{% alert title="Warning" color="secondary" %}}
+Recording rules store the result in a new series and they can add additional complexity.
+{{% /alert %}}
+
+### Task {{% param sectionnumber %}}.1: Memory usage recording rule
+
+With the following recording rule, we create a new metric that represents the available memory on a node as a percentage. A metric the `node exporter` doesn't expose when running on a machine with an older Linux kernel and needs to be calculated every time.
+
+* Query the recording rule in the Prometheus web UI
+{{% details title="Hints" mode-switcher="normalexpertmode" %}}
+{{% onlyWhenNot baloise %}}
+
+* Add the following recording rule file `training_prometheusrule_avail_memory.yaml` to your directory, commit and push your changes.
+
+```yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: prometheusrule-avail-memory
+spec:
+  groups:
+    - name: node_memory
+      rules:
+        - record: :node_memory_MemAvailable_bytes:sum
+          expr: |
+            (1 - (
+              sum by(instance) (node_memory_MemFree_bytes
+              +
+              node_memory_Cached_bytes
+              +
+              node_memory_Buffers_bytes
+            )
+            )
+            /
+              sum by(instance) (node_memory_MemTotal_bytes))
+            * 100
+```
+{{% /onlyWhenNot %}}
+
+{{% onlyWhen baloise %}}
+
+* Add the following recording rule file `training_prometheusrule_avail_memory.yaml` to your monitoring directory, commit and push your changes.
+
+```yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: prometheusrule-avail-memory
+spec:
+  groups:
+    - name: node_memory
+      rules:
+        - record: :node_memory_MemAvailable_bytes:sum
+          expr: |
+            (1 - (
+              sum by(instance) (node_memory_MemFree_bytes{instance="prometheus-training.balgroupit.com:9100"}
+              +
+              node_memory_Cached_bytes{instance="prometheus-training.balgroupit.com:9100"}
+              +
+              node_memory_Buffers_bytes{instance="prometheus-training.balgroupit.com:9100"}
+            )
+            )
+            /
+              sum by(instance) (node_memory_MemTotal_bytes{instance="prometheus-training.balgroupit.com:9100"}))
+            * 100
+```
+{{% /onlyWhen %}}
+
+After configuring the recording rule and reloading the configuration, Prometheus provides those metrics accordingly.
+
+{{% alert title="Note" color="primary" %}}
+It may take up to one minute for the recording rule to become available.
+{{% /alert %}}
+
+Use your `recording_rule` definition in the expression browser:
+
+```promql
+:node_memory_MemAvailable_bytes:sum
+```
+
+or hit the following [link](http://{{% param replacePlaceholder.thanosquerier %}}/graph?g0.range_input=1h&g0.expr=%3Anode_memory_MemAvailable_bytes%3Asum)
+
+{{% /details %}}
+
+{{% alert title="Note" color="primary" %}}
+If you take a look at the historical metrics, you will notice that there is no backfilling (by default) of your data. Only data since activation of the recording rule is available. Optional backfilling can be accomplished by using the [`promtool` utility](https://prometheus.io/docs/prometheus/latest/storage/#backfilling-for-recording-rules)
+{{% /alert %}}
+
+{{% alert title="Note" color="primary" %}}
+Perhaps you have noticed that the rule name starts with a colon. While this may seem odd at first sight, this is actually the result of following the naming convention mentioned above. The rule does not aggregate over a certain `level` and therefore the first field of `level:metric:operation` remains empty.
+{{% /alert %}}
+
+### Task {{% param sectionnumber %}}.2: CPU utilization recording rule
+
+In this lab you are going to create a CPU utilization recording rule.
+
+* Create a rule to record the **CPU utilization** of your server
+* Make sure that Prometheus evaluates this rule every **60 seconds**
+* Verify in the web UI that you can query your recording rule
+
+{{% details title="Hints" mode-switcher="normalexpertmode" %}}
+
+As you saw in a previous exercise, the `node_cpu_seconds_total` metric contains the CPU utilization of a node. We can use the `mode` label on this metric to filter for `idle` cpu time.
+
+All other modes than `idle` indicate, that the CPU is used. Therefore we can simply subtract the idle percentage from 100 % and get the value we want.
+
+
+{{% onlyWhenNot baloise %}}
+
+* Add the following recording rule file `training_recording_rule_cpu_usage.yaml` to your directory, commit and push your changes.
+
+```yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: recording-rule-cpu-usage
+spec:
+  groups:
+    - name: node_cpu
+      interval: 60s
+      rules:
+        - record: instance:node_cpu_utilisation:rate5m
+          expr: |
+            100 - (
+              avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m]))
+              * 100
+            )
+```
+{{% /onlyWhenNot %}}
+
+{{% onlyWhen baloise %}}
+
+* Add the following recording rule file `training_recording_rule_cpu_usage.yaml` to your monitoring directory, commit and push your changes.
+
+```yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: recording-rule-cpu-usage
+spec:
+  groups:
+    - name: node_cpu
+      interval: 60s
+      rules:
+        - record: instance:node_cpu_utilisation:rate5m
+          expr: |
+            100 - (
+              avg by (instance) (rate(node_cpu_seconds_total{mode="idle",instance="prometheus-training.balgroupit.com:9100"}[5m]))
+              * 100
+            )
+```
+{{% /onlyWhen %}}
+
+Query your recording rule using the [expression browser](http://{{% param replacePlaceholder.prometheus %}}/graph?g0.expr=instance%3Anode_cpu_utilisation%3Arate5m)
+{{% /details %}}

@@ -1,36 +1,156 @@
 ---
-title: "5. Instrumenting with client libraries"
+title: "5. Prometheus in Kubernetes"
 weight: 1
 sectionnumber: 1
 ---
 
-While an exporter is an adapter for your service to adapt a service specific value into a metric in the Prometheus format, it is also possible to export metric data programmatically in your application code.
+{{% onlyWhen baloise %}}
 
-## Client libraries
+## Baloise Monitoring Stack
 
-The Prometheus project provides [client libraries](https://prometheus.io/docs/instrumenting/clientlibs/) which are either official or maintained by third-parties. There are libraries for all major languages like Java, Go, Python, PHP, and .NET/C#.
+Have a look at the [Baloise Monitoring Stack](https://confluence.baloisenet.com/display/BALMATE/Application+Monitoring) and take a look at the different components and how they work together.
 
-Even if you don't plan to provide your own metrics, those libraries already export some basic metrics based on the language. For [Go](https://prometheus.io/docs/guides/go-application/), default metrics about memory management (heap, garbage collection) and thread pools can be collected. The same applies to [Java](https://github.com/prometheus/client_java#included-collectors).
+You will notice that each Team Monitoring Stack has components on all clusters it is included in. The metrics scraped by the Team Monitoring Stack are not shared by default. However, you can [provide your Prometheus time series to other monitoring stacks](https://confluence.baloisenet.com/atlassian/display/BALMATE/01+-+Deploying+the+Baloise+Monitoring+Stack).
 
-## Specifications and conventions
+{{% /onlyWhen %}}
 
-Application metrics or metrics in general can contain confidential information, therefore endpoints should be protected from unauthenticated users. This can be achieved either by exposing the metrics on a different port, which is only reachable by prometheus or by protecting the metrics endpoints with some sort of authentication.
+## kube-prometheus
 
-There are some guidelines and best practices how to name your own metrics. Of course, the [specifications of the datamodel](https://prometheus.io/docs/concepts/data_model/#metric-names-and-labels) must be followed and applying the [best practices about naming](https://prometheus.io/docs/practices/naming/) is not a bad idea. All those guidelines and best practices are now officially specified in [openmetrics.io](https://openmetrics.io).
+{{% onlyWhenNot baloise %}}
 
-Following these principles is not (yet) a must, but it helps to understand and interpret your metrics.
+The [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus) stack already provides an extensive Prometheus setup and contains a set of default alerts and dashboards from [Prometheus Monitoring Mixin for Kubernetes](https://github.com/kubernetes-monitoring/kubernetes-mixin). The following targets will be available.
 
-## Best practices
+{{% /onlyWhenNot %}}
 
-Though implementing a metric is an easy task from a technical point of view, it is not so easy to define what and how to measure. If you follow your existing [log statements](https://prometheus.io/docs/practices/instrumentation/#logging) and if you define an error counter to count all [errors and exceptions](https://prometheus.io/docs/practices/instrumentation/#failures), then you already have a good base to see the internal state of your application.
+{{% onlyWhen baloise %}}
 
-### The four golden signals
+The [Baloise Monitoring Stack](https://confluence.baloisenet.com/display/BALMATE/Application+Monitoring) stack already provides an extensive Prometheus setup and contains a set of default alerts and dashboards. The following targets will be available.
 
-Another approach to define metrics is based on [the four golden signals](https://sre.google/sre-book/monitoring-distributed-systems/):
+{{% /onlyWhen %}}
 
-* Latency
-* Traffic
-* Errors
-* Saturation
+**kube-state-metrics:** Exposes metadata information about Kubernetes resources. Used, for example, to check if resources have the expected state (deployment rollouts, pods CrashLooping) or if jobs fail.
 
-There are other methods like [RED](https://www.weave.works/blog/the-red-method-key-metrics-for-microservices-architecture/) or [USE](http://www.brendangregg.com/usemethod.html) that go into the same direction.
+```promql
+# Example metrics
+kube_deployment_created
+kube_deployment_spec_replicas
+kube_daemonset_status_number_misscheduled
+...
+```
+
+**cAdvisor:** [cAdvisor](https://github.com/google/cadvisor) exposes usage and performance metrics about running container. Commonly used to observe memory usage or [CPU throttling](https://kubernetes.io/docs/tasks/configure-pod-container/assign-cpu-resource/).
+
+```promql
+# Example metrics
+container_cpu_cfs_throttled_periods_total
+container_memory_working_set_bytes
+container_fs_inodes_free
+...
+```
+
+**kubelet:** Exposes general kubelet related metrics. Used to observe if the kubelet and the container engine is healthy.
+
+```promql
+# Example metrics
+kubelet_runtime_operations_duration_seconds_bucket
+kubelet_runtime_operations_total
+...
+```
+
+{{% onlyWhenNot baloise %}}
+**apiserver:** Metrics from the Kubernetes API server. Commonly used to catch errors on resources or problems with latency.
+
+```promql
+# Example metrics
+apiserver_request_duration_seconds_bucket
+apiserver_request_total{code="200",...}
+...
+```
+{{% /onlyWhenNot %}}
+
+**probes:** Expose metrics about [Kubernetes liveness, readiness and startup probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) Normally you would not alert on Kubernetes probe metrics, but on container restarts exposed by `kube-state-metrics`.
+
+```promql
+# Example metrics
+prober_probe_total{probe_type="Liveness", result="successful",...}
+prober_probe_total{probe_type="Startup", result="successful",...}
+...
+```
+
+**blackbox-exporter:** Exposes default metrics from blackbox-exporter. Can be customized using the [Probe](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#probe) custom resource.
+
+```promql
+# Example metrics
+probe_http_status_code
+probe_http_duration_seconds
+...
+```
+
+{{% onlyWhenNot baloise %}}
+**node-exporter:** Exposes the hardware and OS metrics from the nodes running Kubernetes.
+
+```promql
+# Example metrics
+node_filesystem_avail_bytes
+node_disk_io_now
+...
+```
+{{% /onlyWhenNot %}}
+
+**alertmanager-main/grafana/prometheus-k8s/prometheus-operator/prometheus-adapter:** Exposes all monitoring stack component metrics.
+
+```promql
+# Example metrics
+alertmanager_alerts_received_total
+alertmanager_config_last_reload_successful
+...
+grafana_build_info
+grafana_datasource_request_total
+...
+prometheus_config_last_reload_successful
+prometheus_rule_evaluation_duration_seconds
+...
+prometheus_operator_reconcile_operations_total
+prometheus_operator_managed_resources
+...
+```
+
+**pushgateway:** Exposes metrics pushed to your pushgateway.
+
+```promql
+# Example metrics
+pushgateway_build_info
+pushgateway_http_requests_total
+...
+```
+
+{{% onlyWhen baloise %}}
+
+**Vault:** Exposes metrics from your vaults instance.
+
+```promql
+# Example metrics
+vault_autopilot_healthy
+vault_core_unsealed
+...
+```
+
+**Jenkins:** Exposes metrics from your Jenkins instance.
+
+```promql
+# Example metrics
+jenkins_builds_duration_milliseconds_summary_count
+jenkins_executors_available
+...
+```
+
+**Argo CD:** Exposes metrics from your Argo CD instance.
+
+
+```promql
+# Example metrics
+argocd_app_info{sync_status="Synced", health_status="Healthy", ...}
+argocd_app_sync_total
+...
+```
+{{% /onlyWhen %}}

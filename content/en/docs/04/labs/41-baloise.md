@@ -37,13 +37,17 @@ spec:
         env: nonprod
 ```
 
-You can simulate this by directly running a curl inside the prometheus pod on this url. The `probe_success` metric should have the value `1`.
+You can simulate this by directly running a curl inside the prometheus pod on this URL. The `probe_success` metric should have the value `1`.
 
 {{% alert title="Note" color="primary" %}}
-Execute the following `oc` commands using one of those options:
+As you will be executing some `oc` commands in the following labs, make sure you are logged in to your OpenShift Cluster.
 
-* OpenShift Webconsole Terminal <http://{{% param replacePlaceholder.openshift_console %}}> right top menu `>_`
-* On your local machine using the `oc` tool, make sure to login on your OpenShift Cluster first.
+You can copy the login Command from the OpenShift UI:
+
+* Browse to <http://{{% param replacePlaceholder.openshift_console %}}>
+* Click on your name in the top right
+* `Copy login command`
+* Replace `6443` with `443`
 
 {{% /alert %}}
 

@@ -4,6 +4,7 @@ weight: 1
 sectionnumber: 1
 ---
 
+
 In this lab you are going to learn about the Prometheus exposition format and how metrics and their values are represented withing the Prometheus ecosystem.
 
 ## Prometheus exposition format
@@ -12,7 +13,7 @@ Prometheus consumes metrics in Prometheus text-based exposition format and plans
 
 Optionally check [Prometheus Exposition Format](https://prometheus.io/docs/instrumenting/exposition_formats/) for a more detailed explanation of the format.
 
-All metrics withing Prometheus are scraped, stored and queried in the following format:
+All metrics within Prometheus are scraped, stored and queried in the following format:
 ```promql
 # HELP <metric name> <info>
 # TYPE <metric name> <metric type>
@@ -64,11 +65,6 @@ For now we focus on Counter and Gauge.
 
 Find additional information in the official [Prometheus Metric Types](https://prometheus.io/docs/concepts/metric_types/) docs.
 
-
-## Recording Rules
-
-Prometheus [recording rules](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) allow you to precompute queries at a defined interval (`global.evaluation_interval` or `interval` in `rule_group`) and save them to a new set of time series.
-
 ## Special labels
 
 As you have already seen in several examples, a Prometheus metric is defined by one or more labels with the corresponding values. Two of those labels are special, because the Prometheus server will automatically generate them for every metric:
@@ -76,11 +72,11 @@ As you have already seen in several examples, a Prometheus metric is defined by 
 
 * instance
 
-     The instance label describes the endpoint where Prometheus scraped the metric. This can be any application or exporter. In addition to the ip address or hostname, this label usually also contains the port number. Example: `10.0.0.25:9100`
+     The instance label describes the endpoint where Prometheus scraped the metric. This can be any application or exporter. In addition to the IP address or hostname, this label usually also contains the port number. Example: `10.0.0.25:9100`.
 
 * job
 
-     This label contains the name of the scrape job as configured in the Prometheus configuration file. All instances configured in the same scrape job will share the same job label.
+     This label contains the name of the scrape job as configured in the Prometheus configuration file. All instances configured in the same scrape job will share the same job label. In a Kubernetes environment this relates to the `Service`-Name.
 
 
 {{% alert title="Note" color="primary" %}}
@@ -88,48 +84,34 @@ Prometheus will append these labels dynamically before sample ingestion. Therefo
 
 {{% /alert %}}
 
-Let's take a look at the following scrape config (example, no need to change the Prometheus configuration on your lab VM):
+Let's take a look at the following `ServiceMonitor` (example, no need to apply this to the cluster):
 
 ```yaml
-...
-scrape_configs:
-  ...
-  - job_name: "node_exporter"
-    static_configs:
-      - targets:
-        - "10.0.0.25:9100"
-        - "10.0.0.26:9100"
-        - "10.0.0.27:9100"
-  ...
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/name: example-web-python
+  name: example-web-python-monitor
+spec:
+  endpoints:
+  - interval: 30s
+    port: http
+    scheme: http
+    path: /metrics
+  selector:
+    matchLabels:
+      name: example-web-python-monitor
 ```
 
-In the example above we configured a single scrape job with the name `node_exporter` and three targets. After ingestion into Prometheus, every metric scraped by this job will have the label: `job="node_exporter"`. In addition, metrics scraped by this job from the target `10.0.0.25` will have the label `instance="10.0.0.25:9100"`
+In the example above we instructed Prometheus to scrape all Pods that are matched by the `Service` named `example-web-python-monitor`. After ingestion into Prometheus, every metric scraped by this job will have the label: `job="example-web-python-monitor"`. In addition, metrics scraped by this job from the Pod with IP `10.0.0.25` will have the label `instance="10.0.0.25:80"`
 
-## Relabeling (advanced)
+## Node Exporter
 
-[Relabeling](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config) in Prometheus can be used to perform numerous tasks using regular expressions, such as
+The tasks of this chapter will all be based on metrics that are provided by the `node_exporter`. An exporter is generally used to expose metrics from an application or system that would otherwise not expose metrics natively in the Prometheus exposition format. You will learn more about other exporters in the lab [4](/docs/04/).
 
-* adding, modifying or removing labels to/from metrics or alerts,
-* filtering metrics based on labels, or
-* enabling horizontal scaling of Prometheus by using `hashmod` relabeling.
+In case of the `node_exporter`, the system we're interested in are Linux machines. It gathers the necessary information from different files and folders (e.g. `/proc/net/arp`, `/proc/sys/fs/file-nr`, etc.) and therefore is able to expose information about common metrics like CPU, Memory, Disk, Network, etc., which makes it very useful for expanding Prometheus' monitoring capabilities into the infrastructure world.
 
-It is a very powerful part of the Prometheus configuration, but it can also get quite complex and confusing. Thus, we will only take a look at some basic/simple examples.
-
-There are four types of relabelings:
-
-* `relabel_configs` (target relabeling)
-
-  Target relabeling is defined in the job definition of a `scrape_config`. This is used to configure scraping of a multi-target exporter (e.g., `blackbox_exporter` or `snmp_exporter`) where one single exporter instance is used to scrape multiple targets. Check out the [Prometheus docs](https://prometheus.io/docs/guides/multi-target-exporter/#querying-multi-target-exporters-with-prometheus) for a detailed explanation and example configurations of `relabel_configs`.
-
-* `metric_relabel_configs` (metrics relabeling)
-
-  Metrics relabeling is applied to scraped samples right before ingestion. It allows adding, modifying, or dropping labels or even dropping entire samples if they match certain criteria.
-
-* `alert_relabel_configs` (alert relabeling)
-
-  Alert relabeling is similar to `metric_relabel_configs`, but applies to outgoing alerts.
-
-* `write_relabel_configs` (remote write relabeling)
-
-  Remote write relabeling is similar to `metric_relabel_configs`, but applies to `remote_write` configurations.
-
+{{% onlyWhenNot baloise %}}
+On our Lab Setup there are several `node_exporters` deployed. On each of our Kuberentes Nodes runs a `node_exporter` - Container deployed in a daemonset.
+{{% /onlyWhenNot %}}

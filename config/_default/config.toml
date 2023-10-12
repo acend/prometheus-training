@@ -71,6 +71,11 @@ copyright = "Puzzle ITC GmbH"
 github_repo = "https://github.com/puzzle/prometheus-training"
 github_branch = "main"
 
+argoCdUrl = "argocd.training.cluster.acend.ch"
+giteaUrl = "gitea.training.cluster.acend.ch"
+prometheusUrl = "<user>-prometheus.training.cluster.acend.ch"
+grafanaUrl = "<user>-grafana.training.cluster.acend.ch"
+
 imagePrefix = "puzzle_"
 enabledModule = "base"
 modeSwitcher = "true"
@@ -110,6 +115,12 @@ defaultValue = "<namespace>"
 placeholder = "<team>"
 queryParam = "t"
 defaultValue = "<team>"
+
+[[params.replaceContent.placeholders]]
+placeholder = "<user>"
+queryParam = "u"
+defaultValue = "<user>"
+href = true
 
 # Enable Lunr.js offline search
 offlineSearch = true

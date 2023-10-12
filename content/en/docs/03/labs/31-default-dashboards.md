@@ -1,7 +1,7 @@
 ---
-title: "6.1 Tasks: Grafana intro"
+title: "3.1 Tasks: Grafana intro"
 weight: 2
-sectionnumber: 6.1
+sectionnumber: 3.1
 onlyWhen: baloise
 ---
 

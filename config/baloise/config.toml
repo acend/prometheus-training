@@ -68,8 +68,13 @@ url = "https://www.acend.ch"
 
 [params]
 copyright = "acend gmbh"
-github_repo = "https://github.com/puzzle/prometheus-training"
+github_repo = "https://github.com/acend/prometheus-training"
 github_branch = "main"
+
+argoCdUrl = "argocd.training.cluster.acend.ch"
+giteaUrl = "gitea.training.cluster.acend.ch"
+prometheusUrl = "<user>-prometheus.training.cluster.acend.ch"
+grafanaUrl = "<user>-grafana.training.cluster.acend.ch"
 
 enabledModule = "base baloise"
 modeSwitcher = "true"
@@ -166,7 +171,7 @@ footer_about_disable = true
 [[params.links.developer]]
 name = "GitHub"
 icon = "fab fa-github"
-url = "https://github.com/puzzle/prometheus-training"
+url = "https://github.com/acend/prometheus-training"
 
 [[params.links.user]]
 name = "Twitter"

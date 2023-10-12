@@ -35,7 +35,7 @@ LABEL maintainer acend.ch
 LABEL org.opencontainers.image.title "acend.ch's Prometheus Basics Training"
 LABEL org.opencontainers.image.description "Container with acend.ch's Prometheus Basics Training content"
 LABEL org.opencontainers.image.authors acend.ch
-LABEL org.opencontainers.image.source https://github.com/puzzle/prometheus-training
+LABEL org.opencontainers.image.source https://github.com/acend/prometheus-training
 LABEL org.opencontainers.image.licenses CC-BY-SA-4.0
 
 EXPOSE 8080

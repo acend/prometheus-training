@@ -1,28 +1,17 @@
 ---
-title: "1.1 Tasks: File-Based Service Discovery"
-weight: 1
+title: "2.1 Tasks: File-Based Service Discovery"
+weight: 2
 onlyWhen: baloise
-
-sectionnumber: 1
+sectionnumber: 2.1
 ---
 
-In this first lab you are going to configure Prometheus to scrape the OpenShift-external targets by using file-based service discovery.
+In this lab you are going to configure Prometheus to scrape OpenShift-external targets by using file-based service discovery.
 
-### Task {{% param sectionnumber %}}.1: Identify your monitoring repository
+### Task {{% param sectionnumber %}}.1: Create static targets
 
-Before we get started, take the time to familiarize yourself with the config repository of your team - it should already be available as described in [Deploying the Baloise Monitoring Stack](https://confluence.baloisenet.com/atlassian/display/BALMATE/01+-+Deploying+the+Baloise+Monitoring+Stack).
+We are going to use the file-based service discovery mechanism that has been deployed on OpenShift (documented in [Confluence](https://confluence.baloisenet.com/atlassian/display/BALMATE/02+-+Add+your+application+as+monitoring+target#id-02Addyourapplicationasmonitoringtarget-AddMonitoringTargetsoutsideofOpenShift)). As file input you will create a ConfigMap defining the static targets.
 
-The working directory for this training is the folder in your [team's config repository](http://{{% param replacePlaceholder.git %}}) with the `-monitoring` suffix. If necessary, create the directory `<team>-monitoring`.
-
-{{% alert title="Note" color="warning" %}}
-Please name all files created in this training with the filename prefix `training_`. This naming pattern will help in cleaning up all related files after training completion.
-{{% /alert %}}
-
-### Task {{% param sectionnumber %}}.2: Create static targets
-
-We are going to use the file-based service discovery mechanism that has been deployed on OpenShift. As file input you will create a ConfigMap defining the static targets.
-
-In the monitoring folder within your repository, create a YAML file `training_target.yaml` defining a ConfigMap and add the file to your repository. You can take the example below as an inspiration.
+In the monitoring folder within your repository, create a YAML file `training_target.yaml` defining a ConfigMap and add the file to your repository. Use the following example:
 
 ```yaml
 apiVersion: v1
@@ -54,7 +43,7 @@ Verify in the [web UI](http://{{% param replacePlaceholder.prometheus %}}).
 As you can see, the target is down and cannot be scraped by Prometheus. The reason is provided in the error message: `Get "https://myhost1.balgroupit.com:9100/metrics": dial tcp: lookup myhost1.balgroupit.com on 172.24.0.10:53: no such host`
 
 {{% alert title="Note" color="warning" %}}
-Other targets may already be defined, either through automation provided by the CMDB or by other team members. You can ignore these for now.
+Other targets may already be defined. You can ignore these for now.
 {{% /alert %}}
 
 In our example we used a non-existing host `myhost1.balgroupit.com`. To fix this, use the existing host `prometheus-training.balgroupit.com` as your target.

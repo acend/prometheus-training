@@ -1,7 +1,7 @@
 ---
-title: "5.1 Tasks: Instrumenting"
+title: "6.1 Tasks: Instrumenting"
 weight: 2
-sectionnumber: 5.1
+sectionnumber: 6.1
 onlyWhen: baloise
 ---
 
