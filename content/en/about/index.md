@@ -12,3 +12,4 @@ menu:
 {{< /blocks/cover >}}
 
 {{< blocks/section color="light" type="section">}}
+{{< /blocks/section >}}

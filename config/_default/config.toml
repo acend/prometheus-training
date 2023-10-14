@@ -162,7 +162,7 @@ url = "https://linkedin.com/company/puzzle-itc/"
     extended = true
     min = "0.100.0"
   [[module.imports]]
-    path = "github.com/puzzle/docsy-puzzle"
+    path = "github.com/acend/docsy-acend"
     disable = false
   [[module.imports]]
     path = "github.com/acend/docsy-plus"
