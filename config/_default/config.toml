@@ -121,7 +121,6 @@ defaultValue = "<team>"
 placeholder = "<user>"
 queryParam = "u"
 defaultValue = "<user>"
-href = true
 
 # Enable Lunr.js offline search
 offlineSearch = true

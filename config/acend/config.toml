@@ -95,6 +95,11 @@ placeholder = "<namespace>"
 queryParam = "n"
 defaultValue = "<namespace>"
 
+[[params.replaceContent.placeholders]]
+placeholder = "<user>"
+queryParam = "u"
+defaultValue = "<user>"
+
 # Enable Lunr.js offline search
 offlineSearch = true
 
