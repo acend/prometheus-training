@@ -2,6 +2,7 @@
 title: "6.1 Tasks: Instrumenting"
 weight: 2
 sectionnumber: 6.1
+onlyWhenNot: baloise
 ---
 
 ### Task {{% param sectionnumber %}}.1: Spring Boot Example Instrumentation
@@ -63,7 +64,7 @@ spec:
         app: example-spring-boot
     spec:
       containers:
-      - image: quay.balgroupit.com/acend/prometheus-training-spring-boot-example:latest
+      - image: quay.io/acend/prometheus-training-spring-boot-example
         imagePullPolicy: Always
         name: example-spring-boot
       restartPolicy: Always
@@ -187,7 +188,7 @@ First we need to clone the repository to our local machine:
 ```bash
 git clone https://github.com/acend/prometheus-training-spring-boot-example && \
 cd prometheus-training-spring-boot-example && \
-git checkout baloise
+git checkout metrics
 ```
 
 and then configure the dependencies and `application.properties` as described in Task {{% param sectionnumber %}}.1.
