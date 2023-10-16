@@ -43,7 +43,7 @@ As mentioned above, these changes have already been implemented in the `solution
 In the next step we will deploy our application to our OpenShift Cluster for demonstration purposes in our monitoring namespace. This should **never** be done for production use cases. If you are familiar with deploying on OpenShift, you can complete this lab by deploying the application on our test cluster.
 {{% /alert %}}
 
-* Add the following resource `training_springboot_example.yaml` to your monitoring directory, commit and push your changes.
+* Add the following resource `user-demo/training_springboot_example.yaml` to your git directory, commit and push your changes.
 
 ```yaml
 ---
