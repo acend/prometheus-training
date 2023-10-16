@@ -187,8 +187,7 @@ First we need to clone the repository to our local machine:
 
 ```bash
 git clone https://github.com/acend/prometheus-training-spring-boot-example && \
-cd prometheus-training-spring-boot-example && \
-git checkout metrics
+cd prometheus-training-spring-boot-example
 ```
 
 and then configure the dependencies and `application.properties` as described in Task {{% param sectionnumber %}}.1.
