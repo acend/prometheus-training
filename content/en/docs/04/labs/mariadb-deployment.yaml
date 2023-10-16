@@ -1,24 +1,4 @@
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: mariadb
-  labels:
-    app: mariadb
-    prometheus-monitoring: 'true'
-spec:
-  ports:
-    - name: mariadb
-      port: 3306
-      protocol: TCP
-      targetPort: 3306
-    - name: mariadb-exp
-      port: 9104
-      protocol: TCP
-      targetPort: 9104
-  selector:
-    app: mariadb
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -38,6 +18,7 @@ spec:
     spec:
       containers:
         - image: quay.io/prometheus/mysqld-exporter:v0.14.0
+          imagePullPolicy: IfNotPresent
           name: mariadb-exporter
           env:
             - name: MYSQL_USER

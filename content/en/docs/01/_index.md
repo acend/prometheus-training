@@ -42,9 +42,6 @@ There are two basic types of targets that we can add to our Prometheus server:
 
 In this case, we define one or more targets statically. In order to make changes to the list, you need to change the configuration file. As the name implies, this way of defining targets is inflexible and not suited to monitor workloads inside of Kubernetes as these are highly dynamic.
 
-{{% onlyWhenNot baloise %}}
-TODO: We currently have no example of a static target in the labs for non-baloise. Do we keep it that way?
-{{% /onlyWhenNot %}}
 {{% onlyWhen baloise %}}
 We will use this type of configuration in the task [2.1](/docs/02/labs/21-baloise/).
 {{% /onlyWhen %}}

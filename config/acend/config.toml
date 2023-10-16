@@ -79,6 +79,10 @@ argoCdUrl = "argocd.training.cluster.acend.ch"
 giteaUrl = "gitea.training.cluster.acend.ch"
 prometheusUrl = "<user>-prometheus.training.cluster.acend.ch"
 grafanaUrl = "<user>-grafana.training.cluster.acend.ch"
+thanosquerier = "<user>-thanos-query.training.cluster.acend.ch"
+alertmanagerUrL = "<user>-alertmanager.training.cluster.acend.ch"
+thanosrulerUrl = "<user>-thanos-ruler.training.cluster.acend.ch"
+mailcatcherUrl = "<user>-mailcatcher.training.cluster.acend.ch"
 
 [params.replaceContent]
 allowedHrefHosts = ['localhost', 'puzzle.ch', 'acend.ch']
@@ -93,6 +97,18 @@ href = true
 placeholder = "<namespace>"
 queryParam = "n"
 defaultValue = "<namespace>"
+
+[[params.replaceContent.placeholders]]
+placeholder = "<user>"
+queryParam = "u"
+defaultValue = "<user>"
+href = true
+
+[[params.replaceContent.placeholders]]
+placeholder = "&lt;user&gt;"
+queryParam = "uu"
+defaultValue = "<user>"
+href = true
 
 # Enable Lunr.js offline search
 offlineSearch = true

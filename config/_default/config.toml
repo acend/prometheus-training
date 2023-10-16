@@ -75,6 +75,10 @@ argoCdUrl = "argocd.training.cluster.acend.ch"
 giteaUrl = "gitea.training.cluster.acend.ch"
 prometheusUrl = "<user>-prometheus.training.cluster.acend.ch"
 grafanaUrl = "<user>-grafana.training.cluster.acend.ch"
+thanosquerier = "<user>-thanos-query.training.cluster.acend.ch"
+alertmanagerUrL = "<user>-alertmanager.training.cluster.acend.ch"
+thanosrulerUrl = "<user>-thanos-ruler.training.cluster.acend.ch"
+mailcatcherUrl = "<user>-mailcatcher.training.cluster.acend.ch"
 
 imagePrefix = "puzzle_"
 enabledModule = "base"
@@ -120,7 +124,6 @@ defaultValue = "<team>"
 placeholder = "<user>"
 queryParam = "u"
 defaultValue = "<user>"
-href = true
 
 # Enable Lunr.js offline search
 offlineSearch = true

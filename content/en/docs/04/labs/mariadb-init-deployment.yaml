@@ -1,32 +1,4 @@
 ---
-apiVersion: v1
-kind: Secret
-metadata:
-  name: mariadb
-  labels:
-    app: mariadb
-data:
-  database-name: YWNlbmRleGFtcGxlZGI=
-  database-password: bXlzcWxwYXNzd29yZA==
-  database-root-password: bXlzcWxyb290cGFzc3dvcmQ=
-  database-user: YWNlbmQtdXNlcg==
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mariadb
-  labels:
-    app: mariadb
-    prometheus-monitoring: 'true'
-spec:
-  ports:
-    - name: mariadb
-      port: 3306
-      protocol: TCP
-      targetPort: 3306
-  selector:
-    app: mariadb
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -46,6 +18,7 @@ spec:
     spec:
       containers:
         - image: mariadb:10.5
+          imagePullPolicy: IfNotPresent
           name: mariadb
           args:
             - --ignore-db-dir=lost+found

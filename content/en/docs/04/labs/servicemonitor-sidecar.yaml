@@ -7,7 +7,7 @@ metadata:
   name: mariadb
 spec:
   endpoints:
-    - interval: 30s
+    - interval: 60s
       port: mariadb-exp
       scheme: http
       path: /metrics
