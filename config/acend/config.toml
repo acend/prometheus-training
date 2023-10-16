@@ -101,6 +101,12 @@ queryParam = "u"
 defaultValue = "<user>"
 href = true
 
+[[params.replaceContent.placeholders]]
+placeholder = "&lt;user&gt;"
+queryParam = "uu"
+defaultValue = "<user>"
+href = true
+
 # Enable Lunr.js offline search
 offlineSearch = true
 
