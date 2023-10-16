@@ -2,6 +2,7 @@
 title: "6.1 Tasks: Instrumenting"
 weight: 2
 sectionnumber: 6.1
+onlyWhen: baloise
 ---
 
 ### Task {{% param sectionnumber %}}.1: Spring Boot Example Instrumentation
