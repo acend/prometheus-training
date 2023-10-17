@@ -32,37 +32,11 @@ With [routing blocks](https://prometheus.io/docs/alerting/latest/configuration/#
 
 As routing definitions might be very complex and hard to understand, [amtool](https://github.com/prometheus/alertmanager#examples) becomes handy as it helps to test the rules. It can also generate test alerts and has even more useful features. More about this in the labs.
 
+{{% onlyWhen baloise %}}
+
+
 ### Default Configuration
 
-{{% onlyWhenNot baloise %}}
-Take a look at the very basic default configuration file of Alertmanager:
-
-//FIXME: Use the default of the kube-prometheus-stack
-
-```yaml
-global:
-  resolve_timeout: 5m
-
-route:
-  group_by: ['alertname']
-  group_wait: 10s
-  group_interval: 10s
-  repeat_interval: 1h
-  receiver: 'web.hook'
-receivers:
-- name: 'web.hook'
-  webhook_configs:
-  - url: 'http://127.0.0.1:5001/'
-inhibit_rules:
-  - source_match:
-      severity: 'critical'
-    target_match:
-      severity: 'warning'
-    equal: ['alertname', 'dev', 'instance']
-```
-{{% /onlyWhenNot %}}
-
-{{% onlyWhen baloise %}}
 Alertmanager's configuration is managed by the monitoring stack. Take a look at the default configuration in use at Baloise:
 
 ```yaml
