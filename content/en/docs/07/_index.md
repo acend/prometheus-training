@@ -207,3 +207,7 @@ Sometimes the community or the maintainer of your Prometheus exporter already pr
 * General rules for various exporters: [samber/awesome-prometheus-alerts](https://github.com/samber/awesome-prometheus-alerts)
 
 {{% /alert %}}
+
+## Templates for awesome rules
+
+Whenever creating PrometheusRules you can always expect other people having the same problem as you. On this [site](https://samber.github.io/awesome-prometheus-alerts/) you can find a collection of different PrometheusRules for a big amount of cloud native technology.
