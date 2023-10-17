@@ -21,7 +21,7 @@ With the following recording rule, we create a new metric that represents the av
 {{% details title="Hints" mode-switcher="normalexpertmode" %}}
 {{% onlyWhenNot baloise %}}
 
-* Add the following recording rule file `training_prometheusrule_avail_memory.yaml` to your directory, commit and push your changes.
+* Add the following recording rule file `user-demo/training_prometheusrule_avail_memory.yaml` to your directory, commit and push your changes.
 
 ```yaml
 apiVersion: monitoring.coreos.com/v1
@@ -46,6 +46,8 @@ spec:
               sum by(instance) (node_memory_MemTotal_bytes))
             * 100
 ```
+
+Commit and push the changes.
 {{% /onlyWhenNot %}}
 
 {{% onlyWhen baloise %}}
@@ -89,7 +91,14 @@ Use your `recording_rule` definition in the expression browser:
 :node_memory_MemAvailable_bytes:sum
 ```
 
+{{% onlyWhenNot baloise %}}
+or hit the following [link](https://{{% param thanosquerier %}}/graph?g0.range_input=1h&g0.expr=%3Anode_memory_MemAvailable_bytes%3Asum)
+{{% /onlyWhenNot %}}
+
+{{% onlyWhen baloise %}}
 or hit the following [link](http://{{% param replacePlaceholder.thanosquerier %}}/graph?g0.range_input=1h&g0.expr=%3Anode_memory_MemAvailable_bytes%3Asum)
+{{% /onlyWhen %}}
+
 
 {{% /details %}}
 
@@ -118,7 +127,7 @@ All other modes than `idle` indicate, that the CPU is used. Therefore we can sim
 
 {{% onlyWhenNot baloise %}}
 
-* Add the following recording rule file `training_recording_rule_cpu_usage.yaml` to your directory, commit and push your changes.
+* Add the following recording rule file `user-demo/training_recording_rule_cpu_usage.yaml` to your directory, commit and push your changes.
 
 ```yaml
 apiVersion: monitoring.coreos.com/v1
@@ -137,6 +146,10 @@ spec:
               * 100
             )
 ```
+
+Commit and push the changes.
+
+Query your recording rule using the [expression browser](https://{{% param thanosquerier %}}/graph?g0.expr=instance%3Anode_cpu_utilisation%3Arate5m)
 {{% /onlyWhenNot %}}
 
 {{% onlyWhen baloise %}}
@@ -160,7 +173,9 @@ spec:
               * 100
             )
 ```
-{{% /onlyWhen %}}
 
 Query your recording rule using the [expression browser](http://{{% param replacePlaceholder.prometheus %}}/graph?g0.expr=instance%3Anode_cpu_utilisation%3Arate5m)
+{{% /onlyWhen %}}
+
+
 {{% /details %}}
