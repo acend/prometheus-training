@@ -1,5 +1,5 @@
 ---
-title: "8.2 Recording Rules"
+title: "8.2 Tasks: Recording Rules"
 weight: 82
 sectionnumber: 8.2
 ---
