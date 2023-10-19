@@ -1,6 +1,7 @@
 github.com/FortAwesome/Font-Awesome v0.0.0-20210804190922-7d3d774145ac/go.mod h1:IUgezN/MFpCDIlFezw3L8j83oeiIuYoj28Miwr/KUYo=
 github.com/acend/docsy-acend v0.0.0-20220406070448-8027986336dc h1:kNDPVcZCXsbJxqDstPoesa9YqWx84BVowj9cgxG6dnE=
 github.com/acend/docsy-acend v0.0.0-20220406070448-8027986336dc/go.mod h1:92hTJB3aPssEooTK+gv0i84vwTjah30HKaLGdupJaPA=
+github.com/acend/docsy-acend v0.0.0-20230301101952-9253f0a31c68/go.mod h1:h8XZkPe1VufdOQfFXcLVQ7FvOJyIMKr8rJcSvWStG2g=
 github.com/acend/docsy-plus v0.0.0-20220428195954-da462686a1f4 h1:NH8RTlmPMcTPxfZYlqYWWcqoQ5STebCQikKByJVRnAA=
 github.com/acend/docsy-plus v0.0.0-20220428195954-da462686a1f4/go.mod h1:FUTTPmi3S92rVMbCYqXdGNxixdyqACBrFTK7dOuMttQ=
 github.com/acend/docsy-plus v0.0.0-20220717113843-b60a5e7a9f6d h1:hmvPxyJN/lhzx1CB7BisLJzXldvAhRuWMg2q54IXL08=
