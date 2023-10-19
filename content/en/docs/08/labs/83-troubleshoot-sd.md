@@ -9,10 +9,10 @@ onlyWhenNot: baloise
 
 We will now deploy an application with an error in the monitoring configration.
 
-* Deploy [Loki](https://grafana.com/oss/loki/) in your namespace by adding the following files to your git repo
+* Deploy [Loki](https://grafana.com/oss/loki/) in your namespace by adding the following files to your git repo in the `user-demo/` folder:
 
 ```yaml
-## Deployment
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -35,7 +35,7 @@ spec:
 ```
 
 ```yaml
-## Service
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -54,7 +54,7 @@ spec:
 ```
 
 ```yaml
-## ServiceMonitor
+---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
@@ -71,6 +71,8 @@ spec:
     matchLabels:
       prometheus-monitoring: 'true'
 ```
+
+Add, commit and push changes to your git repository and let ArgoCD sync your app again.
 
 * When you visit the [Prometheus user interface](http://{{% param replacePlaceholder.k8sPrometheus %}}/targets) you will notice, that the Prometheus Server does not scrape metrics from Loki. Try to find out why.
 
@@ -143,14 +145,15 @@ The quickest way to do this is to follow the instructions in the info box above.
       labels:
         app: loki
       name: loki
-      namespace: loki
     spec:
       ...
       ports:
       - name: http
         ...
     ```
+
     We see that the Service has the port named `http` and the label `app: loki` set. Let's check the ServiceMonitor
+
     ```bash
     {{% param cliToolName %}} get servicemonitor loki -o yaml
     ```
@@ -170,13 +173,14 @@ The quickest way to do this is to follow the instructions in the info box above.
           prometheus-monitoring: "true"
     ```
     We see that the ServiceMonitor expect the port named `http` and a label `prometheus-monitoring: "true"` set. So the culprit is the missing label. Let's adjust the service manifest, commit and push.
+
     ```yaml
     apiVersion: v1
     kind: Service
     metadata:
       labels:
         app: loki
-        prometheus-monitoring=true
+        prometheus-monitoring: "true"
       name: loki
     spec:
       ports:

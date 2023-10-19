@@ -234,37 +234,38 @@ Then we simply increase the counter every time the endpoint `/api` is hit. (just
 To build the application we will use the `Dockerfile` provided in the root folder of the repository.
 
 ```bash
-docker build -t prometheus-training-spring-boot-example:local .
+docker build -t gitea.training.cluster.acend.ch/<user>/prometheus-training-spring-boot-example:latest .
 ```
 
-Start the Spring Boot application:
+Log into the docker registry of Gitea with your Gitea User credentials:
 
 ```bash
-docker run --rm -p 8080:8080 prometheus-training-spring-boot-example:local
+docker login gitea.training.cluster.acend.ch
 ```
 
-Let's create a couple of requests to our new endpoint, make sure to run those commands from a second terminal window, while the Spring Boot application is still running.
+And push the created image into the docker registry:
 
 ```bash
-curl http://localhost:8080/api
+docker push gitea.training.cluster.acend.ch/<user>/prometheus-training-spring-boot-example:latest
 ```
 
-Then verify the Prometheus metrics endpoint and look for a metric with the name `my_prometheus_instrumentation_counter_total`
+Update the deployment in your `user-demo` folder:
 
-```bash
-curl http://localhost:8080/actuator/prometheus
+```yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+[...]
+spec:
+  [...]
+  template:
+    [...]
+    spec:
+      containers:
+      - image: gitea.training.cluster.acend.ch/<user>/prometheus-training-spring-boot-example:latest
+      [...]
 ```
 
-Expected result:
+Commit and push your changes.
 
-```promql
-...
-# HELP my_prometheus_instrumentation_counter_total
-# TYPE my_prometheus_instrumentation_counter_total counter
-my_prometheus_instrumentation_counter_total 1.0
-# HELP tomcat_sessions_rejected_sessions_total
-# TYPE tomcat_sessions_rejected_sessions_total counter
-tomcat_sessions_rejected_sessions_total 0.0
-# HELP jvm_threads_peak_threads The peak live thread count since the Java virtual machine started or peak was reset
-...
-```
+Verify the metrics in your [Prometheus UI](<https://{{% param prometheusUrl %}}>).
