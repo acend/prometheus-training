@@ -6,6 +6,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        TRAINING_HUGO_ENV: [acend, baloise, puzzle]
     steps:
       -
         name: Checkout
@@ -34,36 +37,16 @@ jobs:
           username: ${{ secrets.QUAYIO_USERNAME }}
           password: ${{ secrets.QUAYIO_TOKEN }}
       -
-        name: Build Latest Version
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: |
-            quay.io/acend/prometheus-basics-training:pr-${{ github.event.pull_request.number }}
-      -
-        name: Build Acend Version
+        name: Build ${{matrix.TRAINING_HUGO_ENV}} Version
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
           build-args: |
-            TRAINING_HUGO_ENV=acend
+            TRAINING_HUGO_ENV=${{matrix.TRAINING_HUGO_ENV}}
           push: true
           tags: |
-            quay.io/acend/prometheus-basics-training:pr-${{ github.event.pull_request.number }}-acend
-      -
-        name: Build Baloise Version
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          build-args: |
-            TRAINING_HUGO_ENV=baloise
-          push: true
-          tags: |
-            quay.io/acend/prometheus-basics-training:pr-${{ github.event.pull_request.number }}-baloise
+            quay.io/acend/prometheus-basics-training:pr-${{ github.event.pull_request.number }}-${{matrix.TRAINING_HUGO_ENV}}
       -
         name: 'Install Helm'
         uses: azure/setup-helm@v3
