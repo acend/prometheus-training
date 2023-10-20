@@ -39,7 +39,7 @@ spec:
 
 You can simulate this by directly running a curl inside the prometheus pod on this URL. The `probe_success` metric should have the value `1`.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 As you will be executing some `oc` commands in the following labs, make sure you are logged in to your OpenShift Cluster.
 
 You can copy the login Command from the OpenShift UI:
@@ -61,7 +61,7 @@ probe_success 1
 ...
 ```
 
-{{% alert title="Warning" color="primary" %}}
+{{% alert title="Warning" color="warning" %}}
 As you can see in the [06 - HTTP and TCP endpoint monitoring](https://confluence.baloisenet.com/atlassian/display/BALMATE/06+-+HTTP+and+TCP+endpoint+monitoring) documentation, there are some modules pre-defined. You can directly use them as shown in the lab above.
 
 If you have a custom use case, you can provide your own module as described in `Custom modules`.
@@ -84,7 +84,7 @@ We can select all metrics for the target with the following query:
 or directly navigate to your [Thanos Querier](http://{{% param replacePlaceholder.thanosquerier %}}/graph?g0.expr=%7Binstance%3D"https%3A%2F%2Fbitbucket.balgroupit.com%2Fstatus"%7D&g0.tab=1)
 
 
-{{% alert title="Warning" color="primary" %}}
+{{% alert title="Warning" color="warning" %}}
 In the list of metrics you will find one metric with the name `up`. In the case of a multi-target exporter such as the blackbox exporter this metric will always be up as long as Prometheus is able to successfully scrape the exporter even if the actual target (website, TCP service, etc.) is down. To monitor the state of the targets always use the `probe_success` metric.
 {{% /alert %}}
 

@@ -8,7 +8,7 @@ sectionnumber: 1.1
 
 ## Executing oc commands
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 As you will be executing some `oc` commands in the following labs, make sure you have the tool installed and are logged in to your OpenShift Cluster.
 
 You can copy the login Command from the OpenShift UI:
@@ -27,13 +27,13 @@ Before we get started, take the time to familiarize yourself with the your confi
 
 The working directory for this training is the folder in [your config repository](http://{{% param replacePlaceholder.git %}}) with the `-monitoring` suffix. If necessary, create the directory `<team>-monitoring`.
 
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Warning" color="warning" %}}
 Please name all files created in this training with the filename prefix `training_`. This naming pattern will help in cleaning up all related files after training completion.
 {{% /alert %}}
 
 ### Task {{% param sectionnumber %}}.2: Deploy example application
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 We will deploy an application for demonstration purposes in our monitoring namespace. This should never be done for production use cases. If you are familiar with deploying on OpenShift, you can complete this lab by deploying the application on our test cluster.
 {{% /alert %}}
 

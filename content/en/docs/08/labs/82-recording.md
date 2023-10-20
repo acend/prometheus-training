@@ -9,7 +9,7 @@ Prometheus [recording rules](https://prometheus.io/docs/prometheus/latest/config
 In this lab you are going to create your first own recording rules. [Recording rules](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) are very useful when it comes to queries, which are very complex and take a long time to compute.
 The naming convention dictates to use the following format when naming recording rules `level:metric:operation`. Additional information regarding naming best-practices can be found [here](https://prometheus.io/docs/practices/rules/#naming-and-aggregation).
 
-{{% alert title="Warning" color="secondary" %}}
+{{% alert title="Warning" color="warning" %}}
 Recording rules store the result in a new series and they can add additional complexity.
 {{% /alert %}}
 
@@ -81,7 +81,7 @@ spec:
 
 After configuring the recording rule and reloading the configuration, Prometheus provides those metrics accordingly.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 It may take up to one minute for the recording rule to become available.
 {{% /alert %}}
 
@@ -102,11 +102,11 @@ or hit the following [link](http://{{% param replacePlaceholder.thanosquerier %}
 
 {{% /details %}}
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 If you take a look at the historical metrics, you will notice that there is no backfilling (by default) of your data. Only data since activation of the recording rule is available. Optional backfilling can be accomplished by using the [`promtool` utility](https://prometheus.io/docs/prometheus/latest/storage/#backfilling-for-recording-rules)
 {{% /alert %}}
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Perhaps you have noticed that the rule name starts with a colon. While this may seem odd at first sight, this is actually the result of following the naming convention mentioned above. The rule does not aggregate over a certain `level` and therefore the first field of `level:metric:operation` remains empty.
 {{% /alert %}}
 

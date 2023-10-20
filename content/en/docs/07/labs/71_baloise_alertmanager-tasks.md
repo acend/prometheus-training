@@ -7,7 +7,7 @@ onlyWhen: baloise
 
 ### Task {{% param sectionnumber %}}.1: Add alerting rules
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Alertmanager will automatically send mails to the defined `responsible` email address in the teams root configuration when you set the label `severity=critical` in your PrometheusRule.
 To change this behaviour and/or add Alerting to MS Teams, check the documentation [03 - Setup custom alerting rules](https://confluence.baloisenet.com/atlassian/display/BALMATE/03+-+Setup+custom+alerting+rules#id-03Setupcustomalertingrules-Alerting) in Confluence.
 {{% /alert %}}
@@ -61,7 +61,7 @@ In this task you can use the [amtool](https://github.com/prometheus/alertmanager
 
 To send a test alert with the labels `alertname=Up` and `node=bar` you can simply execute the following command.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 As you will be executing some `oc` commands in the following labs, make sure you are logged in to your OpenShift Cluster.
 
 You can copy the login Command from the OpenShift UI:
@@ -132,7 +132,7 @@ Let's now silence our test alert.
 
 Open the [Alertmanger web UI](http://{{% param replacePlaceholder.alertmanager %}}) and search for the test alert.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 The alert might have been resolved already, use the following command to re-trigger it again:
 
 ```bash
@@ -182,7 +182,7 @@ oc -n $team-monitoring exec -it sts/alertmanager-alertmanager -- sh
 amtool alert add --alertmanager.url=http://localhost:9093 env=dev severity=critical
 ```
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Alerts with the label `severity=critical` will send a mail to the defined `responsible` mail address in the teams [root configuration](https://bitbucket.balgroupit.com/projects/OSDPL/repos/apps-global-config/browse) and post the alert as a message in the defined Teams channel (if enabled).
 {{% /alert %}}
 
