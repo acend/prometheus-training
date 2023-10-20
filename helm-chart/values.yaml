@@ -8,7 +8,7 @@ acendTraining:
         repository: quay.io/acend/prometheus-basics-training
         pullPolicy: Always
         tag: ""
-        tagsuffix: ""
+        tagsuffix: "-puzzle"
       ingress:
         annotations:
           kubernetes.io/tls-acme: "true"
