@@ -47,8 +47,9 @@ jobs:
           push: true
           tags: |
             quay.io/acend/prometheus-basics-training:pr-${{ github.event.pull_request.number }}-${{matrix.TRAINING_HUGO_ENV}}
-  delpoy:
+  deploy:
     runs-on: ubuntu-latest
+    needs: [build]
     steps:      
       -
         name: 'Install Helm'
