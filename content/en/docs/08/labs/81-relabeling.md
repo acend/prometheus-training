@@ -1,5 +1,5 @@
 ---
-title: "8.1 Relabeling"
+title: "8.1 Tasks: Relabeling"
 weight: 81
 sectionnumber: 8.1
 ---

@@ -1,5 +1,5 @@
 ---
-title: "8.4 Cleanup your monitoring workspace"
+title: "8.4 Tasks: Cleanup your monitoring workspace"
 weight: 84
 sectionnumber: 8.4
 onlyWhen: baloise
