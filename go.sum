@@ -33,4 +33,5 @@ github.com/google/docsy/dependencies v0.4.0 h1:FXwyjtuFfPIPBauU2t7uIAgS6VYfJf+OD
 github.com/google/docsy/dependencies v0.4.0/go.mod h1:2zZxHF+2qvkyXhLZtsbnqMotxMukJXLaf8fAZER48oo=
 github.com/puzzle/docsy-puzzle v0.0.0-20220406081603-2cd9f7c8d79a h1:ivuXhwliGTmfp4Zn9dqHiIHPUbniLhsbSYKrsQIoFKM=
 github.com/puzzle/docsy-puzzle v0.0.0-20220406081603-2cd9f7c8d79a/go.mod h1:FHtQEgHYfsiO5d1XXaF/mD5C51PQw1kea8JwTGBs93o=
+github.com/puzzle/docsy-puzzle v0.0.0-20230123144731-757054047a02/go.mod h1:q4bPnnpLaz5IDdFmQFxCHr85uwAsK9ayut5NNmC4w3I=
 github.com/twbs/bootstrap v4.6.1+incompatible/go.mod h1:fZTSrkpSf0/HkL0IIJzvVspTt1r9zuf7XlZau8kpcY0=
