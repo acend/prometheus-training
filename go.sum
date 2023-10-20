@@ -19,6 +19,7 @@ github.com/acend/docsy-plus v0.0.0-20230105141051-e5c62ddf8fb2 h1:cz0UKXNDL920K8
 github.com/acend/docsy-plus v0.0.0-20230105141051-e5c62ddf8fb2/go.mod h1:YDHqf+DCZcx5HvKGzaBluPmLfgHQ2GKkYjggvF98jR4=
 github.com/acend/docsy-plus v0.0.0-20230301142542-2164d6c7e428 h1:5GlTHYZ3W7/LWRD9G5aZHXdRnwb7zkgjR6gqCopLGMk=
 github.com/acend/docsy-plus v0.0.0-20230301142542-2164d6c7e428/go.mod h1:YDHqf+DCZcx5HvKGzaBluPmLfgHQ2GKkYjggvF98jR4=
+github.com/acend/docsy-plus v0.0.0-20230303095323-1af8d88aadc7/go.mod h1:YDHqf+DCZcx5HvKGzaBluPmLfgHQ2GKkYjggvF98jR4=
 github.com/google/docsy v0.3.0 h1:wR0e0xJ6qIj/RPq2AP1Ufm44BCak9Sl72H2BWNAc/JA=
 github.com/google/docsy v0.3.0/go.mod h1:opkofZo7WlNw+/pjrHSC2nAHJHQ6Xnms9vtL/htBvds=
 github.com/google/docsy v0.4.0 h1:Eyt2aiDC1fnw/Qq/9xnIqUU5n5Yyk4c8gX3nBDdTv/4=
