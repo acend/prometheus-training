@@ -80,6 +80,7 @@ jobs:
           TRAINING_NAMESPACE: 'acend-prometheus-basics-training-test'
           TRAINING_VERSION: '${{ github.sha }}'
         run: |
+          helm ls -a -n $TRAINING_NAMESPACE
           helm upgrade $TRAINING_HELM_RELEASE acend-training-chart --install --wait --kubeconfig $HOME/.kube/config  --namespace=$TRAINING_NAMESPACE --set=app.name=$HELM_RELEASE --set=app.version=$TRAINING_VERSION --repo=https://acend.github.io/helm-charts/ --values=helm-chart/values.yaml --atomic --history-max 1
       -
         name: Redeploy Deployments
