@@ -10,5 +10,3 @@ menu:
 {{< blocks/cover title="About Prometheus Basics Training" image_anchor="bottom" height="min" >}}
 
 {{< /blocks/cover >}}
-
-{{< blocks/section color="light" type="section">}}
