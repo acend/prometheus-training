@@ -16,7 +16,7 @@ In this first section we are going to set up our first parts of the Prometheus s
 
 During the labs you will deploy and update several resources on your Kubernetes environment. [ArgoCD](https://{{% param argoCdUrl %}}) will be your primary interface to interact with the cluster and will simplify the GitOps process for you.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Argo CD is a part of the Argo Project and affiliated under the Cloud Native Computing Foundation (CNCF) . The project is just under three years old, completely open source, and primarily implemented in Go.
 
 As the name suggests, Argo CD takes care of the continuous delivery aspect of CI/CD. The core of Argo CD consists of a Kubernetes controller, which continuously compares the live-state with the desired-state. The live-state is tapped from the Kubernetes API, and the desired-state is persisted in the form of manifests in YAML or JSON in a Git repository. Argo CD helps to point out deviations of the states, to display the deviations or to autonomously restore the desired state.

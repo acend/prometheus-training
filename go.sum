@@ -3,6 +3,8 @@ github.com/acend/docsy-acend v0.0.0-20220406070448-8027986336dc h1:kNDPVcZCXsbJx
 github.com/acend/docsy-acend v0.0.0-20220406070448-8027986336dc/go.mod h1:92hTJB3aPssEooTK+gv0i84vwTjah30HKaLGdupJaPA=
 github.com/acend/docsy-acend v0.0.0-20230301101952-9253f0a31c68 h1:trqoLzVYYvjHqexqpuqNzObHdJ3oSP6EqWfl3w/nPPE=
 github.com/acend/docsy-acend v0.0.0-20230301101952-9253f0a31c68/go.mod h1:h8XZkPe1VufdOQfFXcLVQ7FvOJyIMKr8rJcSvWStG2g=
+github.com/acend/docsy-acend v1.0.0 h1:TwmHoH3z6lh5zcNj6zUpMP4lYOhQ+OOgcbBwr7AqVoo=
+github.com/acend/docsy-acend v1.0.0/go.mod h1:h8XZkPe1VufdOQfFXcLVQ7FvOJyIMKr8rJcSvWStG2g=
 github.com/acend/docsy-plus v0.0.0-20220428195954-da462686a1f4 h1:NH8RTlmPMcTPxfZYlqYWWcqoQ5STebCQikKByJVRnAA=
 github.com/acend/docsy-plus v0.0.0-20220428195954-da462686a1f4/go.mod h1:FUTTPmi3S92rVMbCYqXdGNxixdyqACBrFTK7dOuMttQ=
 github.com/acend/docsy-plus v0.0.0-20220717113843-b60a5e7a9f6d h1:hmvPxyJN/lhzx1CB7BisLJzXldvAhRuWMg2q54IXL08=
@@ -19,6 +21,8 @@ github.com/acend/docsy-plus v0.0.0-20230105141051-e5c62ddf8fb2 h1:cz0UKXNDL920K8
 github.com/acend/docsy-plus v0.0.0-20230105141051-e5c62ddf8fb2/go.mod h1:YDHqf+DCZcx5HvKGzaBluPmLfgHQ2GKkYjggvF98jR4=
 github.com/acend/docsy-plus v0.0.0-20230301142542-2164d6c7e428 h1:5GlTHYZ3W7/LWRD9G5aZHXdRnwb7zkgjR6gqCopLGMk=
 github.com/acend/docsy-plus v0.0.0-20230301142542-2164d6c7e428/go.mod h1:YDHqf+DCZcx5HvKGzaBluPmLfgHQ2GKkYjggvF98jR4=
+github.com/acend/docsy-plus v1.0.0 h1:Ag2xQv15gwqPnsvWSBP8GKAnRrctVkADwaG3Qymt5ww=
+github.com/acend/docsy-plus v1.0.0/go.mod h1:YDHqf+DCZcx5HvKGzaBluPmLfgHQ2GKkYjggvF98jR4=
 github.com/google/docsy v0.3.0 h1:wR0e0xJ6qIj/RPq2AP1Ufm44BCak9Sl72H2BWNAc/JA=
 github.com/google/docsy v0.3.0/go.mod h1:opkofZo7WlNw+/pjrHSC2nAHJHQ6Xnms9vtL/htBvds=
 github.com/google/docsy v0.4.0 h1:Eyt2aiDC1fnw/Qq/9xnIqUU5n5Yyk4c8gX3nBDdTv/4=
@@ -29,4 +33,5 @@ github.com/google/docsy/dependencies v0.4.0 h1:FXwyjtuFfPIPBauU2t7uIAgS6VYfJf+OD
 github.com/google/docsy/dependencies v0.4.0/go.mod h1:2zZxHF+2qvkyXhLZtsbnqMotxMukJXLaf8fAZER48oo=
 github.com/puzzle/docsy-puzzle v0.0.0-20220406081603-2cd9f7c8d79a h1:ivuXhwliGTmfp4Zn9dqHiIHPUbniLhsbSYKrsQIoFKM=
 github.com/puzzle/docsy-puzzle v0.0.0-20220406081603-2cd9f7c8d79a/go.mod h1:FHtQEgHYfsiO5d1XXaF/mD5C51PQw1kea8JwTGBs93o=
+github.com/puzzle/docsy-puzzle v0.0.0-20230123144731-757054047a02/go.mod h1:q4bPnnpLaz5IDdFmQFxCHr85uwAsK9ayut5NNmC4w3I=
 github.com/twbs/bootstrap v4.6.1+incompatible/go.mod h1:fZTSrkpSf0/HkL0IIJzvVspTt1r9zuf7XlZau8kpcY0=

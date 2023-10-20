@@ -79,7 +79,7 @@ As you have already seen in several examples, a Prometheus metric is defined by 
      This label contains the name of the scrape job as configured in the Prometheus configuration file. All instances configured in the same scrape job will share the same job label. In a Kubernetes environment this relates to the `Service`-Name.
 
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Prometheus will append these labels dynamically before sample ingestion. Therefore you will not see these labels if you query the metrics endpoint directly (e.g. by using `curl`).
 
 {{% /alert %}}

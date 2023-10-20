@@ -11,7 +11,7 @@ Using the [micrometer metrics facade](https://spring.io/blog/2018/03/16/micromet
 
 Let's have a deeper look at how the instrumentation of a Spring Boot application works. For that we can use the prometheus-training-spring-boot-example application located at https://github.com/acend/prometheus-training-spring-boot-example. To make the application collect metrics and provide a Prometheus endpoint we now need to simply add the following two dependencies in the `pom.xml` file, where it says `<!-- Add Dependencies here-->`:
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 For your convenience, the changes mentioned below are already implemented in the `solution` subfolder of the git repository. You therefore do not have to make any changes in the code.
 {{% /alert %}}
 
@@ -39,7 +39,7 @@ management.endpoints.web.exposure.include=prometheus,health,info,metric
 
 As mentioned above, these changes have already been implemented in the `solution` subfolder of the repository. A pre-built docker image is also available under <https://quay.io/repository/acend/prometheus-training-spring-boot-example?tab=tags>.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 In the next step we will deploy our application to our OpenShift Cluster for demonstration purposes in our monitoring namespace. This should **never** be done for production use cases. If you are familiar with deploying on OpenShift, you can complete this lab by deploying the application on our test cluster.
 {{% /alert %}}
 
@@ -102,7 +102,7 @@ spec:
     path: /actuator/prometheus
 ```
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 This will create a `Deployment`, a `Service` and a `ServiceMonitor` resource in our monitoring namespace. We will learn about `ServiceMonitors` later in labs 8. For now, we only need to know, that a `ServiceMonitor` resource will configure Prometheus targets based on the pods linked to the service.
 {{% /alert %}}
 
@@ -178,7 +178,7 @@ http_requests_total{status="404"} 15
 
 In this lab you're going to create your own custom metric in the java Spring Boot application.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 This tasks requires that you have docker and git installed on your local machine.
 This counter is just a simple example for the sake of this lab. Those kind of metrics are provided by the micrometer Prometheus Spring Boot integration out of the box.
 {{% /alert %}}
