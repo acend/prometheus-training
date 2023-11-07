@@ -61,7 +61,7 @@ team=<team>
 
 Which gives you an output similar to this:
 
-```bash
+```
 NAME                 TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
 example-web-python                  ClusterIP   172.24.195.25    <none>        5000/TCP                     24s
 ```
@@ -83,7 +83,7 @@ curl localhost:5000/metrics
 
 Should result in something like:
 
-```promql
+```
 # HELP python_gc_objects_collected_total Objects collected during gc
 # TYPE python_gc_objects_collected_total counter
 python_gc_objects_collected_total{generation="0"} 541.0
