@@ -19,7 +19,7 @@ jobs:
           version: v3.6.2
       -
         name: Install Kubectl
-        uses: azure/setup-kubectl@v3
+        uses: azure/setup-kubectl@v4
         with:
           version: v1.21.2
       -
