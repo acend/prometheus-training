@@ -11,7 +11,7 @@ RUN apt-get update \
 
 RUN find /src/public/docs/ -regex '.*\(jpg\|jpeg\|png\|gif\)' -exec mogrify -path /src/public -resize 800\> -unsharp 0.25x0.25+8+0.065 "{}" \;
 
-FROM ubuntu:jammy AS wkhtmltopdf
+FROM ubuntu:noble AS wkhtmltopdf
 RUN apt-get update \
     && apt-get install -y curl \
     && curl -L https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.jammy_amd64.deb --output wkhtmltox_0.12.6.1-2.jammy_amd64.deb \
