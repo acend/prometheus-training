@@ -3,6 +3,7 @@ github.com/FortAwesome/Font-Awesome v0.0.0-20230327165841-0698449d50f2/go.mod h1
 github.com/FortAwesome/Font-Awesome v0.0.0-20240108205627-a1232e345536 h1:LFS9LpoSZYhxQ6clU0NIVbaGR08BlxAs4b+9W+7IGVQ=
 github.com/FortAwesome/Font-Awesome v0.0.0-20240108205627-a1232e345536/go.mod h1:IUgezN/MFpCDIlFezw3L8j83oeiIuYoj28Miwr/KUYo=
 github.com/FortAwesome/Font-Awesome v0.0.0-20240402185447-c0f460dca7f7/go.mod h1:IUgezN/MFpCDIlFezw3L8j83oeiIuYoj28Miwr/KUYo=
+github.com/FortAwesome/Font-Awesome v0.0.0-20240716171331-37eff7fa00de/go.mod h1:IUgezN/MFpCDIlFezw3L8j83oeiIuYoj28Miwr/KUYo=
 github.com/acend/docsy-acend v0.0.0-20220406070448-8027986336dc h1:kNDPVcZCXsbJxqDstPoesa9YqWx84BVowj9cgxG6dnE=
 github.com/acend/docsy-acend v0.0.0-20220406070448-8027986336dc/go.mod h1:92hTJB3aPssEooTK+gv0i84vwTjah30HKaLGdupJaPA=
 github.com/acend/docsy-acend v0.0.0-20230301101952-9253f0a31c68 h1:trqoLzVYYvjHqexqpuqNzObHdJ3oSP6EqWfl3w/nPPE=
@@ -37,6 +38,7 @@ github.com/google/docsy v0.4.0/go.mod h1:vJjGkHNaw9bO42gpFTWwAUzHZWZEVlK46Kx7ikY
 github.com/google/docsy v0.9.1 h1:+jqges1YCd+yHeuZ1BUvD8V8mEGVtPxULg5j/vaJ984=
 github.com/google/docsy v0.9.1/go.mod h1:saOqKEUOn07Bc0orM/JdIF3VkOanHta9LU5Y53bwN2U=
 github.com/google/docsy v0.10.0/go.mod h1:c0nIAqmRTOuJ01F85U/wJPQtc3Zj9N58Kea9bOT2AJc=
+github.com/google/docsy v0.11.0/go.mod h1:hGGW0OjNuG5ZbH5JRtALY3yvN8ybbEP/v2iaK4bwOUI=
 github.com/google/docsy/dependencies v0.3.0 h1:dQswd8iYGN0e0ULk/lUjY2rgmvFbr2qyW+QlvZYTrlM=
 github.com/google/docsy/dependencies v0.3.0/go.mod h1:2zZxHF+2qvkyXhLZtsbnqMotxMukJXLaf8fAZER48oo=
 github.com/google/docsy/dependencies v0.4.0 h1:FXwyjtuFfPIPBauU2t7uIAgS6VYfJf+OD5pzxGvkQsQ=
