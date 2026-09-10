@@ -16,7 +16,7 @@ jobs:
         name: 'Install Helm'
         uses: azure/setup-helm@v4
         with:
-          version: v3.6.2
+          version: v3.22.0
       -
         name: Install Kubectl
         uses: azure/setup-kubectl@v4
